@@ -1,0 +1,38 @@
+from EAG_analysis_class import *
+
+def test_input_valid():
+    try:
+        temp = EAGanalysis('Raw data - mix and segments, 12.5.21.ASC')
+        return "success test_input_valid"
+    except:
+        return "error test_input_valid"
+
+
+def test_input_invalid():
+    try:
+        temp = EAGanalysis(4356)
+        return "error test_input_invalid"
+    except:
+        return "success test_input_invalid"
+        
+        
+if __name__ == "__main__":
+  methods = ["test_input_valid", "test_input_invalid"]
+  failed = []
+  passed = []
+
+  for method in methods:
+      result = eval(method)()
+      if "error" in result:
+          failed.append(result)
+      else:
+          passed.append(result)
+
+  print("Tests failed:")
+  for fail in failed:
+      print(fail)
+
+  print("Tests passed:")
+  for success in passed:
+      print(success)
+
