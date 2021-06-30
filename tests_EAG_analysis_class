@@ -19,7 +19,7 @@ def test_input_invalid():
 def test_arrange_data_slicing(slice=6):
     temp = EAGanalysis('Raw data - mix and segments, 12.5.21.ASC')
     temp.arrange_data(slice)
-    if len(temp)>slice*100:
+    if len(Output)>slice*100:
         return "error test_arrange_data_func"
     else:
         return "success test_arrange_data_func"
