@@ -21,9 +21,10 @@ class EAGanalysis:
 
         self.data = pd.read_csv(self.data_fname, sep="\t", names=['Time', 'Value'])
 
-    def arrange_data(self):
+    def arrange_data(self, data_range):
 
         Times = self.data.iloc[:, 0]
+        data_range = data_range*100
 
         Find_Signal = Times[Times.str.contains('Signal') == True]
         # returns all the places were the word signal is in
@@ -44,7 +45,7 @@ class EAGanalysis:
         Output = pd.concat(names, axis=1)
         # Combines all list objects into one dataframe
 
-        del_Unnecessary_lines = Output.iloc[4:801]
+        del_Unnecessary_lines = Output.iloc[4:data_range]
         # delet all the lines after 800 (8 seconds)
 
         Transpose = del_Unnecessary_lines.transpose(copy=True)
@@ -62,7 +63,7 @@ class EAGanalysis:
     def multi_indexing(self):
 
         num_of_exp = []
-        for i in range(1,(len(self.values_only)//3)+1):
+        for i in range(1, (len(self.values_only)//3)+1):
             num_of_exp.append(i)
 
         index = pd.MultiIndex.from_product([num_of_exp, [1, 2,'D']],names=['#_of_experiment', 'Channel'])
@@ -72,23 +73,52 @@ class EAGanalysis:
     def average_blank(self):
         '''This function will create an average of the blank experiments and return it as pandas Series'''
 
-        self.channel1_blank_avg = self.values_only.loc[((7,8,9), 1), slice(None)].mean()
-        self.channel2_blank_avg = self.values_only.loc[((7,8,9), 2), slice(None)].mean()
+        self.channel1_blank_avg = self.values_only.loc[((4,5,6), 1), slice(None)].mean()
+        self.channel2_blank_avg = self.values_only.loc[((4,5,6), 2), slice(None)].mean()
 
         #Enter here the numbers of the blank experiments:
         # loc[((1st_blank,2nd_blank,3rd_blank,etc.), # of channel(1 or 2)), slice(None)]
 
     def minus_blank(self):
         '''This function will substract the blank experiments from all other experiments in the same channel'''
-    # Not done!!!
-        values_only4.subtract(channel2_blank_avg, axis=1, level=2)
 
-    def plot_experiments(self):
-        '''This function will plot all the experiments from the same channel in order to check for irregularities in the recordings '''
+        channel1_minus_blank = self.values_only.subtract(self.channel1_blank_avg, axis=1, level=1)
+        channel2_minus_blank = self.values_only.subtract(self.channel2_blank_avg, axis=1, level=2)
+
+        self.minus_blank_1 = channel1_minus_blank.loc[(slice(None), 1), slice(None)]
+        self.minus_blank_2 = channel2_minus_blank.loc[(slice(None), 2), slice(None)]
 
     def offset(self):
-        '''This function will apply an offset on the data. this offset will take the first 100 samples,
-        and subtrect its median from all the values of the same experiment'''
+        '''This function will apply an offset on the data. This offset will take the first 100 samples
+        (or more depends on the user input, 100 is the defult value), and subtract its median from all the values of the same experiment'''
+
+        median_channel_1 = self.minus_blank_1.iloc[:,:100].median(axis=1)
+        median_channel_2 = self.minus_blank_2.iloc[:,:100].median(axis=1)
+
+        self.offset_1 = self.minus_blank_1.subtract(median_channel_1,axis=0)
+        self.offset_2 = self.minus_blank_2.subtract(median_channel_2,axis=0)
+
+    def compare_sides(self):
+        min_value_1= self.offset_1.min(axis=1).abs().reset_index(drop=True)
+        min_value_2 = self.offset_2.min(axis=1).abs().reset_index(drop=True)
+        #get the min value, turn in to its absolute value and reset the indecis
+
+        min_value_1.index = min_value_1.index + 1
+        min_value_2.index = min_value_2.index + 1
+        # strating the index from 1 instead of 0
+
+        sum= min_value_1.add(min_value_2)
+
+        diff = min_value_1.subtract(min_value_2)
+        # the next part is depend which of the channels is L and Which is Right
+        #(according to the user's input), eventually i wish to get R-L.
+
+        # if 'channel_1' == 'R':
+        #     diff = min_value_1.subtract(min_value_2)
+        # else:
+        #     diff = min_value_2.subtract(min_value_1)
+
+        self.compare_sides = diff/sum
 
     def export_to_excel(self):
         self.values_only_1 = self.values_only.loc[(slice(None), 1), slice(None)]
@@ -102,9 +132,10 @@ class EAGanalysis:
             self.channel2_blank_avg.to_excel(writer, sheet_name='channel2_blank_avg')
 
 a= EAGanalysis('Raw data - mix and segments, 12.5.21.ASC')
-a.arrange_data()
+a.arrange_data(8)
 a.multi_indexing()
 a.average_blank()
-a.export_to_excel()
-
-
+a.minus_blank()
+a.offset()
+a.compare_sides()
+# a.export_to_excel()
