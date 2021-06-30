@@ -30,6 +30,9 @@ def generate():
             loadedData = EAGanalysis(filepath)
 
 def slice_data():
+    global loadedData
+    if testing!=None:
+        loadedData=testing
     # slices the data by "AnalysisTimeFrame" input
     time_frame = int(AnalysisTimeFrame.get())
     loadedData.arrange_data(time_frame)
