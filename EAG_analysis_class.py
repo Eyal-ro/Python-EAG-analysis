@@ -121,14 +121,6 @@ class EAGanalysis:
 
         self.values_only = self.values_only.set_index(index)
 
-    # def tag_experiments(self):
-    #     num_of_exp = []
-    #     for i in range(1, (len(self.values_only) // 3) + 1):
-    #         num_of_exp.append(i)
-    #
-    #     index = pd.MultiIndex.from_product([
-    #         num_of_exp, [1, 2, 'D']], names=['#_of_experiment', 'Channel'])
-
     def getAverageOfExperiments(self, experiment_list, channel):
         count = 0
         for i in experiment_list:
@@ -160,9 +152,6 @@ class EAGanalysis:
             (blank_experiments, 1), slice(None)].mean()
         self.channel2_blank_avg = self.values_only.loc[
             (blank_experiments, 2), slice(None)].mean()
-
-        # Enter here the numbers of the blank experiments:
-        # loc[((1st_blank,2nd_blank,3rd_blank,etc.), # of channel(1 or 2)), slice(None)]
 
     def minus_blank(self):
         """
@@ -339,14 +328,3 @@ class EAGanalysis:
         self.Prism2.reset_index(level=0, inplace=True)
         txt_2 = self.Prism2.to_numpy()
         np.savetxt(file_name2, txt_2, fmt="%s")
-
-# a = EAGanalysis('Raw data - mix and segments, 12.5.21.ASC')
-# a.arrange_data(8)
-# a.transpose()
-# a.multi_indexing()
-# a.average_blank([4, 5, 6])
-# a.minus_blank()
-# a.offset(100)
-# a.compare_sides()
-# a.export_to_excel()
-# a.calculate_stability([1,2,3],[46,47,48])
