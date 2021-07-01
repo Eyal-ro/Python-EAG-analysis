@@ -25,13 +25,10 @@ This package can take data recorded from 2 channels in parallel and import from 
 
 Insect’s antenna signal tends to decay over time. Drop of the signal below a certain threshold must be considered while analyzing the results. This function will take the average of the minimum EAG values measured in the first experiment (for a given odorant) and compare it with the corresponding value of the last experiments with the same stimuli. The experimenter must design his experiment to have the same stimuli at the beginning and at the end.
 
+### Files descriptions
 
-#### Compare sides function
-
-This function allows to compare the respond of the insect’s left and right antennae. 
-It takes the minimal value from each of the two channels taken in the same experiment and compare them using the following equation:
-
-(|Min val R|-|min val L|)/(|Min val R|+|min val L|)
+* EAGGui.py - 
+* GUI_helper_functions.py - 
 
 ## Getting Started
 
@@ -41,7 +38,7 @@ It takes the minimal value from each of the two channels taken in the same exper
 * Running the EAGGui.exe file does not have any pre-requirements. Alternatively, running the EAGGui.py code automatically install the necessary Python packages. 
 
 
-#### Guideline for EAG analysis GUI
+#### Guideline for EAG analysis GUI:
 
 1.	Click the 'Upload file' button to load select a data file (type ASC) to the dashboard.
 2.	Choose the analysis time frame in seconds by filling analysis time window and click the 'Slice data' button. 
