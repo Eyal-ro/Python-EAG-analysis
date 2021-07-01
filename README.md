@@ -45,6 +45,7 @@ Offset will take the first 100 samples (or more depends on the user input), and 
 * EAG_analysis_class.py - Contains the functions that generate an object of the EAG class.
 * tests_EAG_analysis_class.py - Test script containing tests for multiple methods of EAG_analysis_class, using test files pre-made (in test_files folder).    
 * tests_EAGGui.py - Test script containing tests for EAGGui.
+
 (Detailed descriptions for each individual function are located in the function docstring)
 
 ## Getting Started
