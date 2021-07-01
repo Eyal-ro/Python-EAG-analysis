@@ -94,14 +94,25 @@ def subtract_blank(SlicedData, BlankExperimentsEntry, OffsetSampelsEntry,
     SubstractBlankExperiments["state"] = DISABLED
 
 
-def calculate_stability(SubstractBlankExperiments,entry_Stability,entry_Stability2):
+def calculate_stability(SubstractBlankExperiments, FirstExperimentNumber1, SecondExperimentNumber1,entry_Stability,entry_Stability2):
+
     if SubstractBlankExperiments["state"] == NORMAL:
         mb.showerror("Error", "The data needs to be analyzed first. Please press the button 'Subtract blank and offset' ")
-    loadedData.calculate_stability()
 
-    entry_Stability.configure(text=str(loadedData.response_stability1))
-    entry_Stability2.configure(text=str(loadedData.response_stability2))
+    first_experiments = FirstExperimentNumber1.get()
+    second_experiments = SecondExperimentNumber1.get()
 
+    first_experiments = pharse_experiments_input(first_experiments)
+    second_experiments = pharse_experiments_input(second_experiments)
+
+    loadedData.calculate_stability(first_experiments, second_experiments)
+
+
+    response_stability = loadedData.response_stability1
+    response_stability_2 = loadedData.response_stability2
+
+    entry_Stability.configure(text=str(response_stability))
+    entry_Stability2.configure(text=str(response_stability_2))
 
 def export_data_to_excel(SlicedData, ExcelFileNameEntry, excel_button):
     global file_dir, temp_file_name
@@ -222,17 +233,17 @@ def main():
             slice_data(AnalysisTimeFrame, SlicedData))
     SlicedData.grid(row=4, column=2)
 
-    # FirstExperiment = Label(
-    #     EagGui, text="Select first experiment # :", font=('Times 10'))
-    # FirstExperiment.grid(row=8, column=0)
-    # FirstExperimentNumber1 = Entry(EagGui)
-    # FirstExperimentNumber1.grid(row=8, column=1)
+    FirstExperiment = Label(
+        EagGui, text="Select first experiment # :", font=('Times 10'))
+    FirstExperiment.grid(row=8, column=0)
+    FirstExperimentNumber1 = Entry(EagGui)
+    FirstExperimentNumber1.grid(row=8, column=1)
 
-    # SecondExperiment = Label(
-    #     EagGui, text="Select last experiment # :", font=('Times 10'))
-    # SecondExperiment.grid(row=9, column=0)
-    # SecondExperimentNumber1 = Entry(EagGui)
-    # SecondExperimentNumber1.grid(row=9, column=1)
+    SecondExperiment = Label(
+        EagGui, text="Select last experiment # :", font=('Times 10'))
+    SecondExperiment.grid(row=9, column=0)
+    SecondExperimentNumber1 = Entry(EagGui)
+    SecondExperimentNumber1.grid(row=9, column=1)
 
     entry_Stability = Label(EagGui, width=15, height=1, bg="light grey")
     entry_Stability.grid(row=8, column=4)
@@ -241,12 +252,13 @@ def main():
     entry_Stability2.grid(row=9, column=4)
 
     StabilityButton = Button(
-        text="Compute stability", command=lambda
-        SlicedData=SlicedData, 
-        entry_Stability=entry_Stability, entry_Stability2=
-        entry_Stability2:calculate_stability(
-            SlicedData, 
-            entry_Stability,entry_Stability2))
+        text="Compute", command=lambda
+            SlicedData=SlicedData, FirstExperimentNumber1=FirstExperimentNumber1,
+            SecondExperimentNumber1=SecondExperimentNumber1,
+            entry_Stability=entry_Stability, entry_Stability2=entry_Stability2:
+        calculate_stability(
+            SlicedData, FirstExperimentNumber1,
+            SecondExperimentNumber1, entry_Stability, entry_Stability2))
     StabilityButton.grid(row=8, column=2)
     # SlicedData = Button(text="Slice data")
     # SlicedData.configure(command=lambda AnalysisTimeFrame=AnalysisTimeFrame,
