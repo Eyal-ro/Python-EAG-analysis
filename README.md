@@ -52,7 +52,10 @@ Guideline for EAG analysis GUI:
 
 For more examples, please refer to the Documentation.
 
+
 ## Help
+
+In case the script is changed, there are pre-made test files with real data for you to check it with. 
 
 Any advise for common problems or issues.
 ```
