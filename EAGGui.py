@@ -1,9 +1,15 @@
-
 from GUI_helper_functions import *
 from tkinter import messagebox
 import os
 
 def file_path():
+    """
+    Get file path from user and upload the data.
+
+    Returns
+    -------
+    loadedData.
+    """
     global filepath, loadedData
     filepath = StringVar()
     # Fetch the file path of the hex file browsed.
@@ -21,12 +27,20 @@ def file_path():
 
 
 def slice_data(AnalysisTimeFrame, SlicedData, testing=None):
+    """
+    Sliced and arrange the raw data.
+
+    ----------
+    AnalysisTimeFrame : input from user (in sec)
+    SlicedData : Slice button status
+    Returns
+    -------
+    sliced data.
+    """
     # allows running tests in test_EAGGui.py file
     global loadedData
     if testing!=None:
-        loadedData=testing
-    
-    # slices the data by "AnalysisTimeFrame" input
+        loadedData = testing
     time_frame = AnalysisTimeFrame.get()
     if not time_frame.isdecimal():
         mb.showerror(
@@ -37,8 +51,18 @@ def slice_data(AnalysisTimeFrame, SlicedData, testing=None):
     loadedData.multi_indexing()
     SlicedData["state"] = DISABLED
 
+
 def plot_blanks(SlicedData, BlankExperimentsEntry, EagGui):
-    # gets the number of blank experiments and plots them
+    """
+    Plot blank experiments.
+
+    ----------
+    BlankExperimentsEntry : Blank experimentrs numbers
+    EagGui : the GUI
+    Returns
+    -------
+    A figure into the GUI.
+    """
     if SlicedData["state"] == NORMAL:
         mb.showerror("Error", "The data needs to be sliced first!")
     global blank_experiments
@@ -54,35 +78,63 @@ def plot_blanks(SlicedData, BlankExperimentsEntry, EagGui):
 
 
 def plot_experiments_ch1(SlicedData, ExperimentsToAnalyzeEntry, EagGui):
-    # gets the number of blank experiments and plots them
+    """
+    Plot the experimnts on channel 1.
+
+    ----------
+
+    Returns
+    -------
+    A figure into the GUI.
+    """
     global experiments_ch1
     if SlicedData["state"] == NORMAL:
         mb.showerror("Error", "The data needs to be sliced first!")
     experiments_ch1 = ExperimentsToAnalyzeEntry.get()
     experiments_ch1 = pharse_experiments_input(experiments_ch1)
-    fig = plot_experiments_data(experiments_ch1, loadedData,1)
+    fig = plot_experiments_data(experiments_ch1, loadedData, 1)
     canvas = FigureCanvasTkAgg(fig, master=EagGui)
     canvas.draw()
     canvas.get_tk_widget().grid(row=15, column=1)
 
 
 def plot_experiments_ch2(SlicedData, ExperimentsToAnalyzeEntry, EagGui):
-    # gets the number of blank experiments and plots them
+    """
+    Plot the experimnts on channel 2.
+
+    ----------
+
+    Returns
+    -------
+    A figure into the GUI.
+    """
     if SlicedData["state"] == NORMAL:
         mb.showerror("Error", "The data needs to be sliced first!")
     experiments_ch2 = ExperimentsToAnalyzeEntry.get()
     experiments_ch2 = pharse_experiments_input(experiments_ch2)
-    fig = plot_experiments_data(experiments_ch2, loadedData,2)
+    fig = plot_experiments_data(experiments_ch2, loadedData, 2)
     canvas = FigureCanvasTkAgg(fig, master=EagGui)
     canvas.draw()
     canvas.get_tk_widget().grid(row=15, column=1)
 
 
-def subtract_blank(SlicedData, BlankExperimentsEntry, OffsetSampelsEntry, 
-                    SubstractBlankExperiments):
+def subtract_blank(SlicedData, BlankExperimentsEntry,
+                   OffsetSampelsEntry, SubstractBlankExperiments):
+    """
+    Substract blank experiments and offset from data.
+
+    ----------
+    BlankExperimentsEntry : Number of blank experiments.
+    OffsetSampelsEntry : Number of sumpels to offset.
+    SubstractBlankExperiments : The button.
+
+    Returns
+    -------
+    Data after blanks and offset substraction.
+
+    """
     if SlicedData["state"] == NORMAL:
         mb.showerror("Error", "The data needs to be sliced first!")
-
     blank_experiments = BlankExperimentsEntry.get()
     blank_experiments = pharse_experiments_input(blank_experiments)
     loadedData.average_blank(blank_experiments)
@@ -94,10 +146,28 @@ def subtract_blank(SlicedData, BlankExperimentsEntry, OffsetSampelsEntry,
     SubstractBlankExperiments["state"] = DISABLED
 
 
-def calculate_stability(SubstractBlankExperiments, FirstExperimentNumber1, SecondExperimentNumber1,entry_Stability,entry_Stability2):
+def calculate_stability(SubstractBlankExperiments, FirstExperimentNumber1,
+                        SecondExperimentNumber1,
+                        entry_Stability, entry_Stability2):
+    """
+    Calculate the preperation stability.
 
+    ----------
+    SubstractBlankExperiments : Validation that the data was preprocessed
+    FirstExperimentNumber1 : The first experiment.
+    SecondExperimentNumber1 : The second experiment.
+    entry_Stability : The place for the output
+    entry_Stability2 : The place for the output
+
+    Returns
+    -------
+    Stability values for both channels.
+
+    """
     if SubstractBlankExperiments["state"] == NORMAL:
-        mb.showerror("Error", "The data needs to be analyzed first. Please press the button 'Subtract blank and offset' ")
+        mb.showerror(
+            "Error",
+            "Please press the button 'Subtract blank and offset' first")
 
     first_experiments = FirstExperimentNumber1.get()
     second_experiments = SecondExperimentNumber1.get()
