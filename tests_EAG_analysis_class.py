@@ -27,6 +27,7 @@ def compare_data_to_csv(csv,data):
                                                                                                   # is smaller than csv
                                                                                                   # saving resolution
 
+
 def test_input_valid():
     try:
         temp = EAGanalysis('Raw data - mix and segments, 12.5.21.ASC')
