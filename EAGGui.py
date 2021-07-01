@@ -365,7 +365,7 @@ def main():
     ExcelFileNameEntry.grid(row=13, column=1)
 
     excel_button = Button(
-        EagGui, text="Export to excel", bg="green")
+        EagGui, text="Export to excel and to Text", bg="green")
     excel_button.configure(command=lambda SlicedData=SlicedData,
                            ExcelFileNameEntry=ExcelFileNameEntry,
                            excel_button=excel_button:
