@@ -231,6 +231,8 @@ def remove_experiments_from_data(SlicedData, ExperimentsToRemoveEntry1,
         mb.showerror("Error", "The data needs to be sliced first!")
     experiments_to_remove1 = ExperimentsToRemoveEntry1.get()
     experiments_to_remove1 = pharse_experiments_input(experiments_to_remove1)
+    if isinstance(experiments_to_remove1, int):
+        experiments_to_remove1 = [experiments_to_remove1]
     experiments_to_remove1 = [int(i) for i in experiments_to_remove1]
     loadedData.offset_1 = loadedData.offset_1.drop(
         experiments_to_remove1, axis=0)
@@ -248,6 +250,8 @@ def remove_experiments_from_data2(SlicedData, ExperimentsToRemoveEntry2,
         mb.showerror("Error", "The data needs to be sliced first!")
     experiments_to_remove2 = ExperimentsToRemoveEntry2.get()
     experiments_to_remove2 = pharse_experiments_input(experiments_to_remove2)
+    if isinstance(experiments_to_remove2, int):
+        experiments_to_remove2 = [experiments_to_remove2]
     experiments_to_remove2 = [int(i) for i in experiments_to_remove2]
     loadedData.offset_2 = loadedData.offset_2.drop(
         experiments_to_remove2, axis=0)
