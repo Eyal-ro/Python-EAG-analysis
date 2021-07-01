@@ -26,6 +26,12 @@ This package can take data recorded from 2 channels in parallel and import from 
 
 ### Special functions
 
+#### Analysis
+
+All the data is going through the process of subtract blank and offset.
+Subtract blank will take the control experiments (response to wind/solvent) and subtract their average from the data according to time points (per channel). This way only the antenna response to the odorant will be manifested in the final data.
+Offset will take the first 100 samples (or more depends on the user input), and subtract its median from all the values of the same experiment.
+
 #### The Response Stability function
 
 Insect’s antenna signal tends to decay over time. Drop of the signal below a certain threshold must be considered while analyzing the results. This function will take the average of the minimum EAG values measured in the first experiment (for a given odorant) and compare it with the corresponding value of the last experiments with the same stimuli. The experimenter must design his experiment to have the same stimuli at the beginning and at the end.
@@ -37,13 +43,7 @@ It takes the minimal value from each of the two channels taken in the same exper
 
 (|Min val R|-|min val L|)/(|Min val R|+|min val L|)
 
-#### Analysis
-
-All the data is going through the process of subtract blank and offset.
-Subtract blank will take the control experiments (response to wind/solvent) and subtract their average from the data according to time points (per channel). This way only the antenna response to the odorant will be manifested in the final data.
-Offset will take the first 100 samples (or more depends on the user input), and subtract its median from all the values of the same experiment.
-
-### Files descriptions
+### Files description
 
 * EAGGui.py - Contains the GUI backbone and command functions.
 * GUI_helper_functions.py - Contains GUI helper functions (such as plotting etc.).
