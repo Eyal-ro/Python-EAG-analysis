@@ -87,10 +87,8 @@ Offset will take the first 100 samples (or more depends on the user input), and 
 
 In case the script is changed, there are pre-made test files with real data for you to check it with. 
 
-Any advise for common problems or issues.
-```
-command to run if program contains helper info
-```
+Any issues will be addressed by opening a new issue.
+
 
 ## Authors
 
