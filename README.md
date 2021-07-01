@@ -17,8 +17,7 @@ Syntech also provides a specific recording programs design to record from their 
 While AUTOSPIKE integrated with some analysis functions, some desirable options are missing.
 Furthermore, working with large volume of data crushed the program on several occasions.
 
-This package can take data recorded from 2 channels in parallel and exported from AUTOSPIKE in ASCII format (.ASC), analyzed and plot it in several ways.
-An in-depth paragraph about your project and overview of use.
+This package can take data recorded from 2 channels in parallel and import from AUTOSPIKE in ASCII format (.ASC), analyzed and plot it in several ways.
 
 ### Special functions
 
