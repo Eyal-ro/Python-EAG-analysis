@@ -188,6 +188,7 @@ def calculate_stability(SubstractBlankExperiments, FirstExperimentNumber1,
 def export_data_to_excel(SlicedData, ExcelFileNameEntry, excel_button):
     """
     Export the data to excel and txt.
+
     ----------
     ExcelFileNameEntry : file name from user input.
     excel_button : TYPE
@@ -244,16 +245,25 @@ def remove_experiments_from_data2(SlicedData, ExperimentsToRemoveEntry2,
     global experiments_to_remove
     if SlicedData["state"] == NORMAL:
         mb.showerror("Error", "The data needs to be sliced first!")
-
     experiments_to_remove2 = ExperimentsToRemoveEntry2.get()
     experiments_to_remove2 = pharse_experiments_input(experiments_to_remove2)
-
     loadedData.offset_2 = loadedData.offset_2.drop(
         experiments_to_remove2, axis=0)
     RemovesExperiments2["state"] = DISABLED
 
 
 def PlotWithLabels_func(SlicedData, SubstractBlankExperiments, num_of_labels):
+    """
+    Make modular window for the specified number of labels.
+
+    ----------
+    num_of_labels : Number of different labels
+
+    Returns
+    -------
+    None.
+
+    """
     # create popup gui for specific labeling
     EagLabels = Tk()
     EagLabels.title("Plotting by labels")
@@ -277,7 +287,6 @@ def PlotWithLabels_func(SlicedData, SubstractBlankExperiments, num_of_labels):
         row[-1].grid(row=i, column=3)
         all_label_rows.append(row)
     # create button for making the plot
-
     PlottingChannel_1_Button = Button(EagLabels, width=15, text="Create Plot channel 1", command=
     lambda SlicedData=SlicedData,
            all_label_rows=all_label_rows,
@@ -285,7 +294,6 @@ def PlotWithLabels_func(SlicedData, SubstractBlankExperiments, num_of_labels):
            channel=1:
     plot_labels(SlicedData, all_label_rows, SubstractBlankExperiments, EagLabels, channel))
     PlottingChannel_1_Button.grid(row=num_of_labels, column=0, columnspan=4)
-
     PlottingChannel_2_Button = Button(EagLabels, width=15, text="Create Plot channel 2", command=
     lambda SlicedData=SlicedData,
            all_label_rows=all_label_rows,
@@ -293,11 +301,23 @@ def PlotWithLabels_func(SlicedData, SubstractBlankExperiments, num_of_labels):
            channel=2:
     plot_labels(SlicedData, all_label_rows, SubstractBlankExperiments, EagLabels, channel))
     PlottingChannel_2_Button.grid(row=num_of_labels, column=2, columnspan=4)
-
     EagLabels.mainloop()
 
 
 def plot_labels(SlicedData, all_label_rows, SubstractBlankExperiments, EagLabels, channel):
+    """
+    Plot the experiments with the specified labels.
+
+    ----------
+    EagLabels : The window from the previous function
+    channel : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    None.
+
+    """
     # gets the number of experiments per label and plots them
     if SlicedData["state"] == NORMAL or SubstractBlankExperiments["state"] == NORMAL:
         mb.showerror("Error", "The data needs to be sliced and both offset and blank needs to be substracted  first!")
@@ -318,10 +338,29 @@ def plot_labels(SlicedData, all_label_rows, SubstractBlankExperiments, EagLabels
 
 
 def compare_recording_sides(selection):
+    """
+    Compare the two sides (R/L).
+
+    ----------
+    selection : R/L specified by user.
+
+    Returns
+    -------
+    None.
+
+    """
     loadedData.compare_sides(selection)
 
 
 def main():
+    """
+    The GUI main function.
+
+    Returns
+    -------
+    None.
+
+    """
     EagGui = Tk()
 
     Browsebutton = Button(EagGui, width=15, text="Upload file", command=file_path)
@@ -338,9 +377,8 @@ def main():
 
     SlicedData = Button(text="Slice data")
     SlicedData.configure(
-        command=lambda
-            AnalysisTimeFrame=AnalysisTimeFrame, SlicedData=SlicedData:
-        slice_data(AnalysisTimeFrame, SlicedData))
+        command=lambda AnalysisTimeFrame=AnalysisTimeFrame, SlicedData=SlicedData:
+            slice_data(AnalysisTimeFrame, SlicedData))
     SlicedData.grid(row=4, column=2)
 
     FirstExperiment = Label(
@@ -370,10 +408,6 @@ def main():
             SlicedData, FirstExperimentNumber1,
             SecondExperimentNumber1, entry_Stability, entry_Stability2))
     StabilityButton.grid(row=8, column=2)
-    # SlicedData = Button(text="Slice data")
-    # SlicedData.configure(command=lambda AnalysisTimeFrame=AnalysisTimeFrame,
-    #                                    SlicedData=SlicedData: slice_data(AnalysisTimeFrame, SlicedData))
-    # SlicedData.grid(row=7, column=7)
 
     label_StabilityButton = Label(EagGui, text="Response stability- channel 1: ")
     label_StabilityButton.grid(row=8, column=3)
