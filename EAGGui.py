@@ -197,7 +197,7 @@ def export_data_to_excel(SlicedData, ExcelFileNameEntry, excel_button):
     loadedData.export_to_excel(file_dir + '/' + temp_file_name + '.xlsx')
     excel_button["state"] = DISABLED
 
-def remove_experiments_from_data(SlicedData, ExperimentsToRemoveEntry1,ExperimentsToRemoveEntry2,
+def remove_experiments_from_data(SlicedData, ExperimentsToRemoveEntry1,
                                   RemovesExperiments):
     global experiments_to_remove
     if SlicedData["state"] == NORMAL:
@@ -206,15 +206,23 @@ def remove_experiments_from_data(SlicedData, ExperimentsToRemoveEntry1,Experimen
     experiments_to_remove1 = ExperimentsToRemoveEntry1.get()
     experiments_to_remove1 = pharse_experiments_input(experiments_to_remove1)
 
+    loadedData.offset_1 = loadedData.offset_1.drop(
+        experiments_to_remove1, axis=0)
+
+    RemovesExperiments["state"] = DISABLED
+
+def remove_experiments_from_data2(SlicedData,ExperimentsToRemoveEntry2,
+                                  RemovesExperiments2):
+    global experiments_to_remove
+    if SlicedData["state"] == NORMAL:
+        mb.showerror("Error", "The data needs to be sliced first!")
+
     experiments_to_remove2 = ExperimentsToRemoveEntry2.get()
     experiments_to_remove2 = pharse_experiments_input(experiments_to_remove2)
 
-    # print(loadedData.offset_1)
-    loadedData.offset_1 = loadedData.offset_1.drop(
-        experiments_to_remove1, axis=0)
     loadedData.offset_2 = loadedData.offset_2.drop(
         experiments_to_remove2, axis=0)
-    RemovesExperiments["state"] = DISABLED
+    RemovesExperiments2["state"] = DISABLED
 
 def PlotWithLabels_func(SlicedData,SubstractBlankExperiments, num_of_labels):
     # create popup gui for specific labeling
@@ -411,10 +419,10 @@ def main():
         text="Plot experiments with labels", command =
         lambda SlicedData = SlicedData, SubstractBlankExperiments=SubstractBlankExperiments:
         PlotWithLabels_func(SlicedData,SubstractBlankExperiments, num_of_labels_entry.get()))
-    PlotWithLabels.grid(row=11, column=2)
+    PlotWithLabels.grid(row=12, column=2)
 
 
-    ExperimentsToRemove = Label(
+   ExperimentsToRemove = Label(
         EagGui, text="Experiments to remove from data-channel 1:", font=('Times 10'))
     ExperimentsToRemove.grid(row=10, column=0)
     ExperimentsToRemoveEntry1 = Entry(EagGui)
@@ -427,16 +435,27 @@ def main():
     ExperimentsToRemoveEntry2.grid(row=11, column=1)
 
     RemovesExperiments = Button(
-        text="Remove specified experiments")
+        text="Remove specified experiments -1")
     RemovesExperiments.configure(command=lambda SlicedData=SlicedData,
                                  ExperimentsToRemoveEntry1=
-                                 ExperimentsToRemoveEntry1,ExperimentsToRemoveEntry2= ExperimentsToRemoveEntry2,
+                                 ExperimentsToRemoveEntry1,
                                  RemovesExperiments=RemovesExperiments:
                                      remove_experiments_from_data(
                                          SlicedData,
-                                         ExperimentsToRemoveEntry1,ExperimentsToRemoveEntry2,
+                                         ExperimentsToRemoveEntry1,
                                          RemovesExperiments))
-    RemovesExperiments.grid(row=11, column=2)
+    RemovesExperiments.grid(row=10, column=2)
+
+    RemovesExperiments2 = Button(
+        text="Remove specified experiments-2")
+    RemovesExperiments2.configure(command=lambda SlicedData=SlicedData,
+                                 ExperimentsToRemoveEntry2= ExperimentsToRemoveEntry2,
+                                 RemovesExperiments2=RemovesExperiments2:
+                                     remove_experiments_from_data2(
+                                         SlicedData,
+                                         ExperimentsToRemoveEntry2,
+                                         RemovesExperiments2))
+    RemovesExperiments2.grid(row=11, column=2)
 
     CompareSidesLabel = Label(EagGui, text="Choose if ch1 is Right or Left"
                               , font=('Times 10'))
