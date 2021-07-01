@@ -109,9 +109,9 @@ def plot_blank_experiments_data(experiment_list, data):
     fig : a figure
 
     """
-    fig1 = Figure(figsize=(3, 3))
+    fig1 = Figure(figsize=(5, 5))
     plot1 = fig1.add_subplot(111)
-    fig2 = Figure(figsize=(3, 3))
+    fig2 = Figure(figsize=(5, 5))
     plot2 = fig2.add_subplot(111)
     if isinstance(experiment_list, int):
         experiment_list = str(experiment_list)
