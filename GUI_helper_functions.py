@@ -8,11 +8,21 @@ from tkinter import messagebox as mb
 from tkinter import filedialog
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,
                                                NavigationToolbar2Tk)
-
 matplotlib.use('TkAgg')
 
 
 def pharse_experiments_input(experiments):
+    """
+    Pharse experiments number input to valid list.
+
+    ----------
+    experiments : use input
+    Returns
+    -------
+    experiments : TYPE
+        DESCRIPTION.
+
+    """
     experiments = experiments.split(',')
     new_experiments = []
     indeces_to_remove = []
@@ -31,6 +41,19 @@ def pharse_experiments_input(experiments):
 
 
 def plot_experiments_data(experiment_list, data, channel):
+    """
+    Plot experiment list.
+
+    ----------
+    experiment_list : specified by user input.
+    data : dataset
+    channel : which channel to plot
+
+    Returns
+    -------
+    fig : a figure
+
+    """
     fig = Figure(figsize=(5, 5))
     plot1 = fig.add_subplot(111)
     if isinstance(experiment_list, int):
@@ -60,6 +83,18 @@ def plot_experiments_label_data(experiment_list, labels, data, channel):
 
 
 def plot_blank_experiments_data(experiment_list, data):
+    """
+    Plot blank experiment list.
+
+    ----------
+    experiment_list : specified by user input.
+    data : dataset
+
+    Returns
+    -------
+    fig : a figure
+
+    """
     fig1 = Figure(figsize=(5, 5))
     plot1 = fig1.add_subplot(111)
     fig2 = Figure(figsize=(5, 5))
