@@ -6,6 +6,7 @@ This project creates an easy-to-use dashboard that allow researchers to load, pr
 
 * Download the folder from the following link : https://www.dropbox.com/sh/fqueakv37j9f6u1/AAA8sDu4T7JmOr0SpZq1c0zHa?dl=0
 * Run the 'EAGGui' file in the 'dist' folder
+* The program can also be run using a Python IDE by running the EAGGui.py file.
 
 
 ## Description
@@ -29,8 +30,8 @@ Insect’s antenna signal tends to decay over time. Drop of the signal below a c
 
 ### Dependencies
 
-* This package was generated using python 3 on a Windows 10 machine. 
-* Running the EAGGui.exe file does not have any pre-requirements. Alternatively, running the EAGGui.py code automatically install the necessary python packages. 
+* This package was generated using Python 3 on a Windows 10 machine. 
+* Running the EAGGui.exe file does not have any pre-requirements. Alternatively, running the EAGGui.py code automatically install the necessary Python packages. 
 
 
 #### Guideline for EAG analysis GUI:
