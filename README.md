@@ -35,9 +35,13 @@ command to run if program contains helper info
 
 ## Authors
 
-Contributors names and contact info
+Contributors names:
 
-ex. Dominique Pizzie  
+* Eyal Rozenfeld
+* Yifat Weiss
+* Neta Shvil
+
+
 
 
 ## Version History
@@ -47,4 +51,4 @@ ex. Dominique Pizzie
 
 ## License
 
-This project is licensed under the [NAME HERE] License - see the LICENSE.md file for details
+This project is licensed under the MIT License - see the LICENSE.md file for details
