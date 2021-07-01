@@ -69,7 +69,7 @@ It takes the minimal value from each of the two channels taken in the same exper
 4.	Enter number of experiments for initial analysing. 
 5.	Choose which channel to plot from by clicking on the 'Plot experiments channel 1' or 'Plot experiments channel 2'.
 6.	Fill the blank experiments number and create plot with only the blank experiments by clicking on 'Plot blank'.
-7.	For checking response stability per channel, choose first and second experiments numbers wanted by filling the appropriate windows with experiments numbers, and click on 'Compute'. A range of experiments, not single numbers, must be entered.
+7.	For checking response stability per channel, choose first and second experiments numbers wanted by filling the appropriate windows with experiments numbers, and click on 'Compute'. A range of experiments (example: 1-4), not single numbers, must be entered.
 8.	Fill the number of samples for offset.
     - In case it is not filled, default is 100.
 10.	Click the 'Subtract blank and offset' to remove blank experiments and offset samples from the data.
@@ -81,7 +81,7 @@ It takes the minimal value from each of the two channels taken in the same exper
     - Channel 2 will be the other side by default.  
 13.	Click on 'Export to excel' button to export data as .xlsx file to wanted folder.
 
-
+* Experiment input can be entered in the following formats: 1 OR 1,2,3 OR 1-3 OR 1,4-6
 
 ## Help
 
