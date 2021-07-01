@@ -14,7 +14,7 @@ def file_path():
     global filepath, loadedData
     filepath = StringVar()
     # Fetch the file path of the hex file browsed.
-    if(filepath == ""):
+    if (filepath == ""):
         filepath = filedialog.askopenfilename(initialdir=os.getcwd(),
                                               title="select a file",
                                               filetypes=[("Data files",
@@ -40,7 +40,7 @@ def slice_data(AnalysisTimeFrame, SlicedData, testing=None):
     """
     # allows running tests in test_EAGGui.py file
     global loadedData
-    if testing!=None:
+    if testing != None:
         loadedData = testing
     time_frame = AnalysisTimeFrame.get()
     if not time_frame.isdecimal():
@@ -212,7 +212,7 @@ def export_data_to_excel(SlicedData, ExcelFileNameEntry, excel_button):
 
 
 def remove_experiments_from_data(SlicedData, ExperimentsToRemoveEntry1,
-                                  RemovesExperiments):
+                                 RemovesExperiments):
     """
     Remove specified experiments from data.
     ----------
@@ -252,37 +252,38 @@ def remove_experiments_from_data2(SlicedData, ExperimentsToRemoveEntry2,
         experiments_to_remove2, axis=0)
     RemovesExperiments2["state"] = DISABLED
 
-def PlotWithLabels_func(SlicedData,SubstractBlankExperiments, num_of_labels):
+
+def PlotWithLabels_func(SlicedData, SubstractBlankExperiments, num_of_labels):
     # create popup gui for specific labeling
     EagLabels = Tk()
     EagLabels.title("Plotting by labels")
     all_label_rows = []
-    EagLabels.attributes('-topmost','true')
+    EagLabels.attributes('-topmost', 'true')
     try:
         num_of_labels = int(num_of_labels)
     except:
         mb.showerror("Error", "You didn't enter a number, so we choose 4")
-        num_of_labels=4
+        num_of_labels = 4
 
     for i in range(num_of_labels):
-        row=[]
-        row.append(Label(EagLabels, text="Select experiments matching label "+str(i+1)+":", font=('Times 10')))
-        row[-1].grid(row=i,column=0)
+        row = []
+        row.append(Label(EagLabels, text="Select experiments matching label " + str(i + 1) + ":", font=('Times 10')))
+        row[-1].grid(row=i, column=0)
         row.append(Entry(EagLabels))
-        row[-1].grid(row=i,column=1)
-        row.append(Label(EagLabels, text="Select label "+str(i+1)+":", font=('Times 10')))
-        row[-1].grid(row=i,column=2)
+        row[-1].grid(row=i, column=1)
+        row.append(Label(EagLabels, text="Select label " + str(i + 1) + ":", font=('Times 10')))
+        row[-1].grid(row=i, column=2)
         row.append(Entry(EagLabels))
-        row[-1].grid(row=i,column=3)
+        row[-1].grid(row=i, column=3)
         all_label_rows.append(row)
     # create button for making the plot
 
-    PlottingChannel_1_Button = Button(EagLabels, width=15, text="Create Plot channel 1", command =
-        lambda SlicedData=SlicedData,
-        all_label_rows=all_label_rows,
-        EagLabels=EagLabels, SubstractBlankExperiments=SubstractBlankExperiments,
-        channel=1:
-        plot_labels(SlicedData, all_label_rows, SubstractBlankExperiments, EagLabels, channel))
+    PlottingChannel_1_Button = Button(EagLabels, width=15, text="Create Plot channel 1", command=
+    lambda SlicedData=SlicedData,
+           all_label_rows=all_label_rows,
+           EagLabels=EagLabels, SubstractBlankExperiments=SubstractBlankExperiments,
+           channel=1:
+    plot_labels(SlicedData, all_label_rows, SubstractBlankExperiments, EagLabels, channel))
     PlottingChannel_1_Button.grid(row=num_of_labels, column=0, columnspan=4)
 
     PlottingChannel_2_Button = Button(EagLabels, width=15, text="Create Plot channel 2", command=
@@ -293,18 +294,17 @@ def PlotWithLabels_func(SlicedData,SubstractBlankExperiments, num_of_labels):
     plot_labels(SlicedData, all_label_rows, SubstractBlankExperiments, EagLabels, channel))
     PlottingChannel_2_Button.grid(row=num_of_labels, column=2, columnspan=4)
 
-
     EagLabels.mainloop()
 
 
 def plot_labels(SlicedData, all_label_rows, SubstractBlankExperiments, EagLabels, channel):
     # gets the number of experiments per label and plots them
-    if SlicedData["state"] == NORMAL or SubstractBlankExperiments["state"]==NORMAL:
+    if SlicedData["state"] == NORMAL or SubstractBlankExperiments["state"] == NORMAL:
         mb.showerror("Error", "The data needs to be sliced and both offset and blank needs to be substracted  first!")
         EagLabels.destroy()
         return
     experiments = []
-    labels=[]
+    labels = []
     for i in range(len(all_label_rows)):
         current_experiment = all_label_rows[i][1].get()
         if current_experiment == "":
@@ -319,6 +319,7 @@ def plot_labels(SlicedData, all_label_rows, SubstractBlankExperiments, EagLabels
 
 def compare_recording_sides(selection):
     loadedData.compare_sides(selection)
+
 
 def main():
     EagGui = Tk()
@@ -338,8 +339,8 @@ def main():
     SlicedData = Button(text="Slice data")
     SlicedData.configure(
         command=lambda
-        AnalysisTimeFrame=AnalysisTimeFrame, SlicedData=SlicedData:
-            slice_data(AnalysisTimeFrame, SlicedData))
+            AnalysisTimeFrame=AnalysisTimeFrame, SlicedData=SlicedData:
+        slice_data(AnalysisTimeFrame, SlicedData))
     SlicedData.grid(row=4, column=2)
 
     FirstExperiment = Label(
@@ -389,19 +390,18 @@ def main():
     PlotExperimentsCh1 = Button(
         text="Plot experiments channel 1", command=
         lambda SlicedData=SlicedData,
-        ExperimentsToAnalyzeEntry=ExperimentsToAnalyzeEntry,
-        EagGui=EagGui:
+               ExperimentsToAnalyzeEntry=ExperimentsToAnalyzeEntry,
+               EagGui=EagGui:
         plot_experiments_ch1(SlicedData, ExperimentsToAnalyzeEntry, EagGui))
     PlotExperimentsCh1.grid(row=5, column=2)
 
     PlotExperimentsCh2 = Button(
         text="Plot experiments channel 2", command
         =lambda SlicedData=SlicedData,
-        ExperimentsToAnalyzeEntry=ExperimentsToAnalyzeEntry,
-        EagGui=EagGui:
+                ExperimentsToAnalyzeEntry=ExperimentsToAnalyzeEntry,
+                EagGui=EagGui:
         plot_experiments_ch2(SlicedData, ExperimentsToAnalyzeEntry, EagGui))
     PlotExperimentsCh2.grid(row=5, column=3)
-
 
     BlankExperiments = Label(
         EagGui, text="Blank Experiments:", font=('Times 10'))
@@ -417,8 +417,8 @@ def main():
 
     PlotBlankExperiments = Button(text="Plot blank",
                                   command=lambda SlicedData=SlicedData,
-                                  BlankExperimentsEntry=BlankExperimentsEntry,
-                                  EagGui=EagGui: plot_blanks(
+                                                 BlankExperimentsEntry=BlankExperimentsEntry,
+                                                 EagGui=EagGui: plot_blanks(
                                       SlicedData,
                                       BlankExperimentsEntry, EagGui))
     PlotBlankExperiments.grid(row=6, column=2)
@@ -426,16 +426,16 @@ def main():
     SubstractBlankExperiments = Button(
         text="Subtract blank and offset")
     SubstractBlankExperiments.configure(command=lambda SlicedData=SlicedData,
-                                        BlankExperimentsEntry=
-                                        BlankExperimentsEntry,
-                                        OffsetSampelsEntry=OffsetSampelsEntry,
-                                        SubstractBlankExperiments=
-                                        SubstractBlankExperiments:
-                                            subtract_blank(
-                                                SlicedData,
-                                                BlankExperimentsEntry,
-                                                OffsetSampelsEntry,
-                                                SubstractBlankExperiments))
+                                                       BlankExperimentsEntry=
+                                                       BlankExperimentsEntry,
+                                                       OffsetSampelsEntry=OffsetSampelsEntry,
+                                                       SubstractBlankExperiments=
+                                                       SubstractBlankExperiments:
+    subtract_blank(
+        SlicedData,
+        BlankExperimentsEntry,
+        OffsetSampelsEntry,
+        SubstractBlankExperiments))
     SubstractBlankExperiments.grid(row=7, column=2)
 
     num_of_labels_label = Label(text="# of labels for plotting:", font=('Times 10'))
@@ -445,11 +445,10 @@ def main():
     num_of_labels_entry.grid(row=12, column=1)
 
     PlotWithLabels = Button(
-        text="Plot experiments with labels", command =
-        lambda SlicedData = SlicedData, SubstractBlankExperiments=SubstractBlankExperiments:
-        PlotWithLabels_func(SlicedData,SubstractBlankExperiments, num_of_labels_entry.get()))
+        text="Plot experiments with labels", command=
+        lambda SlicedData=SlicedData, SubstractBlankExperiments=SubstractBlankExperiments:
+        PlotWithLabels_func(SlicedData, SubstractBlankExperiments, num_of_labels_entry.get()))
     PlotWithLabels.grid(row=12, column=2)
-
 
     ExperimentsToRemove = Label(EagGui, text="Experiments to remove from data-channel 1:", font=('Times 10'))
     ExperimentsToRemove.grid(row=10, column=0)
@@ -465,24 +464,24 @@ def main():
     RemovesExperiments = Button(
         text="Remove specified experiments -1")
     RemovesExperiments.configure(command=lambda SlicedData=SlicedData,
-                                 ExperimentsToRemoveEntry1=
-                                 ExperimentsToRemoveEntry1,
-                                 RemovesExperiments=RemovesExperiments:
-                                     remove_experiments_from_data(
-                                         SlicedData,
-                                         ExperimentsToRemoveEntry1,
-                                         RemovesExperiments))
+                                                ExperimentsToRemoveEntry1=
+                                                ExperimentsToRemoveEntry1,
+                                                RemovesExperiments=RemovesExperiments:
+    remove_experiments_from_data(
+        SlicedData,
+        ExperimentsToRemoveEntry1,
+        RemovesExperiments))
     RemovesExperiments.grid(row=10, column=2)
 
     RemovesExperiments2 = Button(
         text="Remove specified experiments-2")
     RemovesExperiments2.configure(command=lambda SlicedData=SlicedData,
-                                 ExperimentsToRemoveEntry2= ExperimentsToRemoveEntry2,
-                                 RemovesExperiments2=RemovesExperiments2:
-                                     remove_experiments_from_data2(
-                                         SlicedData,
-                                         ExperimentsToRemoveEntry2,
-                                         RemovesExperiments2))
+                                                 ExperimentsToRemoveEntry2=ExperimentsToRemoveEntry2,
+                                                 RemovesExperiments2=RemovesExperiments2:
+    remove_experiments_from_data2(
+        SlicedData,
+        ExperimentsToRemoveEntry2,
+        RemovesExperiments2))
     RemovesExperiments2.grid(row=11, column=2)
 
     CompareSidesLabel = Label(EagGui, text="Choose if ch1 is Right or Left"
@@ -490,12 +489,11 @@ def main():
     CompareSidesLabel.grid(row=13, column=1)
     R_or_L = StringVar(EagGui)
     # variable.set('R') # default value
-    R_or_L_menu = OptionMenu(EagGui, R_or_L, 'R', 'L', command = compare_recording_sides)
+    R_or_L_menu = OptionMenu(EagGui, R_or_L, 'R', 'L', command=compare_recording_sides)
     R_or_L_menu.grid(row=13, column=2)
-    
 
     ExcelFileName = Label(EagGui, text=
-                          "Type excel file name (without .xlsx):"
+    "Type excel file name (without .xlsx):"
                           , font=('Times 10'))
     ExcelFileName.grid(row=14, column=0)
     ExcelFileNameEntry = Entry(EagGui)
@@ -504,11 +502,11 @@ def main():
     excel_button = Button(
         EagGui, text="Export to excel and to Text", bg="green")
     excel_button.configure(command=lambda SlicedData=SlicedData,
-                           ExcelFileNameEntry=ExcelFileNameEntry,
-                           excel_button=excel_button:
-                               export_data_to_excel(
-                                   SlicedData,
-                                   ExcelFileNameEntry, excel_button))
+                                          ExcelFileNameEntry=ExcelFileNameEntry,
+                                          excel_button=excel_button:
+    export_data_to_excel(
+        SlicedData,
+        ExcelFileNameEntry, excel_button))
     excel_button.grid(row=14, column=2)
 
     exit_button = Button(EagGui, text="Exit", bg="red", command=EagGui.destroy)
@@ -523,5 +521,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
