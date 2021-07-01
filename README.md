@@ -2,6 +2,12 @@
 
 This project creates an easy-to-use dashboard that allow researchers to load, pre-process and plot initial EAG data from .ASC files.
 
+## Installing and executing the program
+
+* Download the folder from the following link : https://www.dropbox.com/sh/fqueakv37j9f6u1/AAA8sDu4T7JmOr0SpZq1c0zHa?dl=0
+* Run the 'EAGGui' file in the 'dist' folder
+
+
 ## Description
 
 Electroantennogram (EAG) is a technique for measuring the average output of an insect antenna for a given odor.
@@ -26,15 +32,6 @@ Insect’s antenna signal tends to decay over time. Drop of the signal below a c
 * Describe any prerequisites, libraries, OS version, etc., needed before installing program.
 * ex. Windows 10
 
-### Installing
-
-* Download the folder from the following link : https://www.dropbox.com/sh/fqueakv37j9f6u1/AAA8sDu4T7JmOr0SpZq1c0zHa?dl=0
-* Run the 'EAGGui' file in the 'dist' folder
-
-### Executing program
-
-* How to run the program
-* Step-by-step bullets
 
 #### Guideline for EAG analysis GUI:
 
