@@ -1,3 +1,6 @@
+from EAGGui import *
+import GUI_helper_functions
+
 def test_slice_button_is_disabled():
     loadedData = EAGanalysis("Raw data - mix and segments, 12.5.21.ASC")
 
