@@ -122,6 +122,35 @@ class EAGanalysis:
 
         self.values_only = self.values_only.set_index(index)
 
+    # def tag_experiments(self):
+    #     num_of_exp = []
+    #     for i in range(1, (len(self.values_only) // 3) + 1):
+    #         num_of_exp.append(i)
+    #
+    #     index = pd.MultiIndex.from_product([
+    #         num_of_exp, [1, 2, 'D']], names=['#_of_experiment', 'Channel'])
+
+    def getAverageOfExperiments(self,experiment_list,channel):
+        count=0
+        for i in experiment_list:
+            count+=1
+            if count==1:
+                data=self.values_only.loc[int(i)].loc[channel].copy()
+            else:
+                data+=self.values_only.loc[int(i)].loc[channel]
+
+        data=data/count
+
+        return data
+
+
+
+
+
+
+
+
+
     def average_blank(self, blank_experiments):
         """
         This function creates an average of the blank experiments and return it as pandas Series
@@ -201,7 +230,7 @@ class EAGanalysis:
         self.offset_2.index = self.offset_2.index + 1
         # strating the index from 1 instead of 0
         
-    def calculate_stability(self, first_experiments,second_experiments):
+    def calculate_stability(self):
 
         """
                 This function creates an average of the first and last experiment's min points (with the same stimuli)
@@ -217,17 +246,12 @@ class EAGanalysis:
                         -------
                         response_stability - float for channel 1 and for channel 2
                         """
-        channel1_start_avg = self.offset_1.loc[
-            (first_experiments), slice(None)].min(axis=1).mean()
 
-        channel2_start_avg = self.offset_2.loc[
-            (first_experiments), slice(None)].min(axis=1).mean()
+        channel1_start_avg = self.offset_1.iloc[0:3].min(axis=1).mean()
+        channel2_start_avg = self.offset_2.iloc[0:3].min(axis=1).mean()
 
-        channel1_end_avg = self.offset_1.loc[
-            (second_experiments), slice(None)].min(axis=1).mean()
-
-        channel2_end_avg = self.offset_2.loc[
-            (second_experiments), slice(None)].min(axis=1).mean()
+        channel1_end_avg = self.offset_1.iloc[-4:-1].min(axis=1).mean()
+        channel2_end_avg = self.offset_2.iloc[-4:-1].min(axis=1).mean()
 
         self.response_stability1= channel1_start_avg/channel1_end_avg
         self.response_stability2= channel2_start_avg/channel2_end_avg

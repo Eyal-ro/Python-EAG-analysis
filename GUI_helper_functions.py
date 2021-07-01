@@ -34,8 +34,8 @@ def plot_experiments_data(experiment_list, data, channel):
     plot1 = fig.add_subplot(111)
     if isinstance(experiment_list, int):
         experiment_list = str(experiment_list)
-    if len([experiment_list]) == 1:
-        experiment_list = [experiment_list]
+    # if len([experiment_list]) == 1:
+    #     experiment_list = [experiment_list]
     for i in experiment_list:
         plot1.plot(data.values_only.loc[int(i)].loc[channel])
         plot1.set_title('Experiments', loc='center')
@@ -65,8 +65,8 @@ def plot_blank_experiments_data(experiment_list, data):
     plot2 = fig2.add_subplot(111)
     if isinstance(experiment_list, int):
         experiment_list = str(experiment_list)
-    if len([experiment_list]) == 1:
-        experiment_list = [experiment_list]
+    # if len([experiment_list]) == 1:
+    #     experiment_list = [experiment_list]
     for i in experiment_list:
         plot1.plot(data.values_only.loc[int(i)].loc[1])
         plot1.get_xaxis().set_visible(False)

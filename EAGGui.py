@@ -94,24 +94,14 @@ def subtract_blank(SlicedData, BlankExperimentsEntry, OffsetSampelsEntry,
     SubstractBlankExperiments["state"] = DISABLED
 
 
-def calculate_stability(SubstractBlankExperiments, FirstExperimentNumber1, SecondExperimentNumber1,entry_Stability,entry_Stability2):
-
+def calculate_stability(SubstractBlankExperiments,entry_Stability,entry_Stability2):
     if SubstractBlankExperiments["state"] == NORMAL:
         mb.showerror("Error", "The data needs to be analyzed first. Please press the button 'Subtract blank and offset' ")
+    loadedData.calculate_stability()
 
-    first_experiments = FirstExperimentNumber1.get()
-    second_experiments = SecondExperimentNumber1.get()
+    entry_Stability.configure(text=str(loadedData.response_stability1))
+    entry_Stability2.configure(text=str(loadedData.response_stability2))
 
-    first_experiments = pharse_experiments_input(first_experiments)
-    second_experiments = pharse_experiments_input(second_experiments)
-
-    loadedData.calculate_stability(first_experiments, second_experiments)
-
-    response_stability = loadedData.response_stability1
-    response_stability_2 = loadedData.response_stability2
-
-    entry_Stability.configure(text=str(response_stability))
-    entry_Stability2.configure(text=str(response_stability_2))
 
 def export_data_to_excel(SlicedData, ExcelFileNameEntry, excel_button):
     global file_dir, temp_file_name
@@ -207,6 +197,9 @@ def plot_labels(SlicedData, all_label_rows, SubstractBlankExperiments, EagLabels
     canvas.get_tk_widget().grid(row=15, column=1)
 
 
+def compare_recording_sides(selection):
+    loadedData.compare_sides(selection)
+
 def main():
     EagGui = Tk()
 
@@ -229,17 +222,17 @@ def main():
             slice_data(AnalysisTimeFrame, SlicedData))
     SlicedData.grid(row=4, column=2)
 
-    FirstExperiment = Label(
-        EagGui, text="Select first experiment # :", font=('Times 10'))
-    FirstExperiment.grid(row=8, column=0)
-    FirstExperimentNumber1 = Entry(EagGui)
-    FirstExperimentNumber1.grid(row=8, column=1)
+    # FirstExperiment = Label(
+    #     EagGui, text="Select first experiment # :", font=('Times 10'))
+    # FirstExperiment.grid(row=8, column=0)
+    # FirstExperimentNumber1 = Entry(EagGui)
+    # FirstExperimentNumber1.grid(row=8, column=1)
 
-    SecondExperiment = Label(
-        EagGui, text="Select last experiment # :", font=('Times 10'))
-    SecondExperiment.grid(row=9, column=0)
-    SecondExperimentNumber1 = Entry(EagGui)
-    SecondExperimentNumber1.grid(row=9, column=1)
+    # SecondExperiment = Label(
+    #     EagGui, text="Select last experiment # :", font=('Times 10'))
+    # SecondExperiment.grid(row=9, column=0)
+    # SecondExperimentNumber1 = Entry(EagGui)
+    # SecondExperimentNumber1.grid(row=9, column=1)
 
     entry_Stability = Label(EagGui, width=15, height=1, bg="light grey")
     entry_Stability.grid(row=8, column=4)
@@ -248,13 +241,12 @@ def main():
     entry_Stability2.grid(row=9, column=4)
 
     StabilityButton = Button(
-        text="Compute", command=lambda
-        SlicedData=SlicedData, FirstExperimentNumber1=FirstExperimentNumber1,
-        SecondExperimentNumber1=SecondExperimentNumber1,
-        entry_Stability=entry_Stability,entry_Stability2=entry_Stability2:
-    calculate_stability(
-        SlicedData, FirstExperimentNumber1,
-        SecondExperimentNumber1, entry_Stability,entry_Stability2))
+        text="Compute stability", command=lambda
+        SlicedData=SlicedData, 
+        entry_Stability=entry_Stability, entry_Stability2=
+        entry_Stability2:calculate_stability(
+            SlicedData, 
+            entry_Stability,entry_Stability2))
     StabilityButton.grid(row=8, column=2)
     # SlicedData = Button(text="Slice data")
     # SlicedData.configure(command=lambda AnalysisTimeFrame=AnalysisTimeFrame,
@@ -356,12 +348,21 @@ def main():
                                          RemovesExperiments))
     RemovesExperiments.grid(row=10, column=2)
 
-    ExcelFileName = Label(
-        EagGui, text=
-        "Type excel file name (without .xlsx):", font=('Times 10'))
-    ExcelFileName.grid(row=12, column=0)
+    CompareSidesLabel = Label(EagGui, text="Choose if ch1 is Right or Left"
+                              , font=('Times 10'))
+    CompareSidesLabel.grid(row=12, column=1)
+    R_or_L = StringVar(EagGui)
+    # variable.set('R') # default value
+    R_or_L_menu = OptionMenu(EagGui, R_or_L, 'R', 'L', command = compare_recording_sides)
+    R_or_L_menu.grid(row=12, column=2)
+    
+
+    ExcelFileName = Label(EagGui, text=
+                          "Type excel file name (without .xlsx):"
+                          , font=('Times 10'))
+    ExcelFileName.grid(row=13, column=0)
     ExcelFileNameEntry = Entry(EagGui)
-    ExcelFileNameEntry.grid(row=12, column=1)
+    ExcelFileNameEntry.grid(row=13, column=1)
 
     excel_button = Button(
         EagGui, text="Export to excel", bg="green")
@@ -371,7 +372,7 @@ def main():
                                export_data_to_excel(
                                    SlicedData,
                                    ExcelFileNameEntry, excel_button))
-    excel_button.grid(row=12, column=2)
+    excel_button.grid(row=13, column=2)
 
     exit_button = Button(EagGui, text="Exit", bg="red", command=EagGui.destroy)
     exit_button.grid(row=20, column=1)
