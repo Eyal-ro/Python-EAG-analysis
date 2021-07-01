@@ -2,6 +2,7 @@ from GUI_helper_functions import *
 from tkinter import messagebox
 import os
 
+
 def file_path():
     """
     Get file path from user and upload the data.
@@ -183,11 +184,23 @@ def calculate_stability(SubstractBlankExperiments, FirstExperimentNumber1,
     entry_Stability.configure(text=str(response_stability))
     entry_Stability2.configure(text=str(response_stability_2))
 
+
 def export_data_to_excel(SlicedData, ExcelFileNameEntry, excel_button):
+    """
+    Export the data to excel and txt.
+    ----------
+    ExcelFileNameEntry : file name from user input.
+    excel_button : TYPE
+        DESCRIPTION.
+
+    Returns
+    -------
+    None.
+
+    """
     global file_dir, temp_file_name
     if SlicedData["state"] == NORMAL:
         mb.showerror("Error", "The data needs to be sliced first!")
-
     temp_file_name = ExcelFileNameEntry.get()
     temp_file_name = "".join(i for i in temp_file_name if i not in "\/:*?<>|")
     file_dir = filedialog.askdirectory()
@@ -197,22 +210,37 @@ def export_data_to_excel(SlicedData, ExcelFileNameEntry, excel_button):
     loadedData.export_to_excel(file_dir + '/' + temp_file_name + '.xlsx')
     excel_button["state"] = DISABLED
 
+
 def remove_experiments_from_data(SlicedData, ExperimentsToRemoveEntry1,
                                   RemovesExperiments):
+    """
+    Remove specified experiments from data.
+    ----------
+    ExperimentsToRemoveEntry1 : experiments numbers to remove
+    RemovesExperiments : the button
+        DESCRIPTION.
+
+    Returns
+    -------
+    None.
+
+    """
     global experiments_to_remove
     if SlicedData["state"] == NORMAL:
         mb.showerror("Error", "The data needs to be sliced first!")
-
     experiments_to_remove1 = ExperimentsToRemoveEntry1.get()
     experiments_to_remove1 = pharse_experiments_input(experiments_to_remove1)
-
     loadedData.offset_1 = loadedData.offset_1.drop(
         experiments_to_remove1, axis=0)
-
     RemovesExperiments["state"] = DISABLED
 
-def remove_experiments_from_data2(SlicedData,ExperimentsToRemoveEntry2,
+
+def remove_experiments_from_data2(SlicedData, ExperimentsToRemoveEntry2,
                                   RemovesExperiments2):
+    """
+    Same as above for channel 2
+
+    """
     global experiments_to_remove
     if SlicedData["state"] == NORMAL:
         mb.showerror("Error", "The data needs to be sliced first!")
@@ -422,8 +450,7 @@ def main():
     PlotWithLabels.grid(row=12, column=2)
 
 
-   ExperimentsToRemove = Label(
-        EagGui, text="Experiments to remove from data-channel 1:", font=('Times 10'))
+    ExperimentsToRemove = Label(EagGui, text="Experiments to remove from data-channel 1:", font=('Times 10'))
     ExperimentsToRemove.grid(row=10, column=0)
     ExperimentsToRemoveEntry1 = Entry(EagGui)
     ExperimentsToRemoveEntry1.grid(row=10, column=1)
