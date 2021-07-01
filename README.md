@@ -28,8 +28,8 @@ Insect’s antenna signal tends to decay over time. Drop of the signal below a c
 
 ### Installing
 
-* How/where to download your program
-* Any modifications needed to be made to files/folders
+* Download the folder from the following link : https://www.dropbox.com/sh/fqueakv37j9f6u1/AAA8sDu4T7JmOr0SpZq1c0zHa?dl=0
+* Run the 'EAGGui' file in the 'dist' folder
 
 ### Executing program
 
