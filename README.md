@@ -53,7 +53,6 @@ Insect’s antenna signal tends to decay over time. Drop of the signal below a c
     - Channel 2 will be the other side by default.  
 13.	Click on 'Export to excel' button to export data as .xlsx file to wanted folder.
 
-For more examples, please refer to the Documentation.
 
 
 ## Help
