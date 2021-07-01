@@ -29,6 +29,7 @@ Insect’s antenna signal tends to decay over time. Drop of the signal below a c
 
 This function allows to compare the respond of the insect’s left and right antennae. 
 It takes the minimal value from each of the two channels taken in the same experiment and compare them using the following equation:
+
 (|Min val R|-|min val L|)/(|Min val R|+|min val L|)
 
 #### Analysis
