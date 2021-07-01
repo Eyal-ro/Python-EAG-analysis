@@ -29,8 +29,8 @@ Insect’s antenna signal tends to decay over time. Drop of the signal below a c
 
 ### Dependencies
 
-* Describe any prerequisites, libraries, OS version, etc., needed before installing program.
-* ex. Windows 10
+* This package was generated using python 3 on a Windows 10 machine. 
+* Running the EAGGui.exe file does not have any pre-requirements. Alternatively, running the EAGGui.py code automatically install the necessary python packages. 
 
 
 #### Guideline for EAG analysis GUI:
