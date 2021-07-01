@@ -19,6 +19,11 @@ Furthermore, working with large volume of data crushed the program on several oc
 
 This package can take data recorded from 2 channels in parallel and import from AUTOSPIKE in ASCII format (.ASC), analyzed and plot it in several ways.
 
+
+![alt text](https://github.com/Eyal-ro/Python-EAG-analysis/blob/master/Orthoptera_image%20(3).jpg?raw=true)
+
+@Keren Levy
+
 ### Special functions
 
 #### The Response Stability function
@@ -82,8 +87,10 @@ Offset will take the first 100 samples (or more depends on the user input), and 
 
 In case the script is changed, there are pre-made test files with real data for you to check it with. 
 
-Any issues will be addressed by opening a new issue.
-
+Any advise for common problems or issues.
+```
+command to run if program contains helper info
+```
 
 ## Authors
 
