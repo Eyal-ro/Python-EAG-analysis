@@ -40,9 +40,9 @@ Offset will take the first 100 samples (or more depends on the user input), and 
 
 ### Files descriptions
 
-* EAGGui.py - 
-* GUI_helper_functions.py - 
-* EAG_analysis_class.py - 
+* EAGGui.py - Contains the GUI backbone and command functions.
+* GUI_helper_functions.py - Contains GUI helper functions (such as plotting etc.).
+* EAG_analysis_class.py - Contains the functions that generate an object of the EAG class.
 * tests_EAG_analysis_class.py - Test script containing tests for multiple methods of EAG_analysis_class, using test files pre-made (in test_files folder).    
 * tests_EAGGui.py - Test script containing tests for EAGGui.
 
