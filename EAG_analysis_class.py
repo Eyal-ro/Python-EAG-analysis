@@ -143,14 +143,6 @@ class EAGanalysis:
 
         return data
 
-
-
-
-
-
-
-
-
     def average_blank(self, blank_experiments):
         """
         This function creates an average of the blank experiments and return it as pandas Series
@@ -164,7 +156,6 @@ class EAGanalysis:
                 -------
                 self.channel1/2_blank_avg  - pandas Series
                 """
-
        
         self.channel1_blank_avg = self.values_only.loc[
             (blank_experiments, 1), slice(None)].mean()
@@ -230,12 +221,11 @@ class EAGanalysis:
         self.offset_2.index = self.offset_2.index + 1
         # strating the index from 1 instead of 0
         
-    def calculate_stability(self):
+    def calculate_stability(self, first_experiments,second_experiments):
 
         """
                 This function creates an average of the first and last experiment's min points (with the same stimuli)
                 and give its ratio (1st/last)
-
                         Parameters
                         ----------
                         self.offset_1/2 - df
@@ -246,12 +236,17 @@ class EAGanalysis:
                         -------
                         response_stability - float for channel 1 and for channel 2
                         """
+        channel1_start_avg = self.offset_1.loc[
+            (first_experiments), slice(None)].min(axis=1).mean()
 
-        channel1_start_avg = self.offset_1.iloc[0:3].min(axis=1).mean()
-        channel2_start_avg = self.offset_2.iloc[0:3].min(axis=1).mean()
+        channel2_start_avg = self.offset_2.loc[
+            (first_experiments), slice(None)].min(axis=1).mean()
 
-        channel1_end_avg = self.offset_1.iloc[-4:-1].min(axis=1).mean()
-        channel2_end_avg = self.offset_2.iloc[-4:-1].min(axis=1).mean()
+        channel1_end_avg = self.offset_1.loc[
+            (second_experiments), slice(None)].min(axis=1).mean()
+
+        channel2_end_avg = self.offset_2.loc[
+            (second_experiments), slice(None)].min(axis=1).mean()
 
         self.response_stability1= channel1_start_avg/channel1_end_avg
         self.response_stability2= channel2_start_avg/channel2_end_avg
