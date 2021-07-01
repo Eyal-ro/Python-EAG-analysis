@@ -6,12 +6,23 @@ from matplotlib.figure import Figure
 import matplotlib
 from tkinter import messagebox as mb
 from tkinter import filedialog
+from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,
+                                               NavigationToolbar2Tk)
 matplotlib.use('TkAgg')
-from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, 
-NavigationToolbar2Tk)
 
 
 def pharse_experiments_input(experiments):
+    """
+    Pharse experiments number input to valid list.
+
+    ----------
+    experiments : use input
+    Returns
+    -------
+    experiments : TYPE
+        DESCRIPTION.
+
+    """
     experiments = experiments.split(',')
     new_experiments = []
     indeces_to_remove = []
@@ -19,7 +30,7 @@ def pharse_experiments_input(experiments):
         if '-' in experiments[j]:
             new_experiments = new_experiments + list(
                 range(int(experiments[j].split('-')[0]),
-                      int(experiments[j].split('-')[1])+1))
+                      int(experiments[j].split('-')[1]) + 1))
             indeces_to_remove.append(j)
     for ele in sorted(indeces_to_remove, reverse=True):
         del experiments[ele]
@@ -30,6 +41,19 @@ def pharse_experiments_input(experiments):
 
 
 def plot_experiments_data(experiment_list, data, channel):
+    """
+    Plot experiment list.
+
+    ----------
+    experiment_list : specified by user input.
+    data : dataset
+    channel : which channel to plot
+
+    Returns
+    -------
+    fig : a figure
+
+    """
     fig = Figure(figsize=(5, 5))
     plot1 = fig.add_subplot(111)
     if isinstance(experiment_list, int):
@@ -51,7 +75,7 @@ def plot_experiments_label_data(experiment_list, labels, data, channel):
         if isinstance(experiment_list[i], int):
             experiment_list[i] = str(experiment_list[i])
     for experiment in experiment_list:
-        plot1.plot(data.getAverageOfExperiments(experiment,channel))
+        plot1.plot(data.getAverageOfExperiments(experiment, channel))
         plot1.axes.get_xaxis().set_visible(False)
     plot1.set_title('Labels plot channel' + str(channel), loc='center')
     plot1.legend(labels)
@@ -59,6 +83,18 @@ def plot_experiments_label_data(experiment_list, labels, data, channel):
 
 
 def plot_blank_experiments_data(experiment_list, data):
+    """
+    Plot blank experiment list.
+
+    ----------
+    experiment_list : specified by user input.
+    data : dataset
+
+    Returns
+    -------
+    fig : a figure
+
+    """
     fig1 = Figure(figsize=(5, 5))
     plot1 = fig1.add_subplot(111)
     fig2 = Figure(figsize=(5, 5))
@@ -78,4 +114,3 @@ def plot_blank_experiments_data(experiment_list, data):
     fig1.legend(experiment_list)
     fig2.legend(experiment_list)
     return fig1, fig2
-

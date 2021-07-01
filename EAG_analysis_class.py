@@ -1,8 +1,7 @@
-import pandas as pd
 import pathlib
 from typing import Union
 import numpy as np
-import matplotlib.pyplot as plt
+import pandas as pd
 
 
 class EAGanalysis:
@@ -130,26 +129,18 @@ class EAGanalysis:
     #     index = pd.MultiIndex.from_product([
     #         num_of_exp, [1, 2, 'D']], names=['#_of_experiment', 'Channel'])
 
-    def getAverageOfExperiments(self,experiment_list,channel):
-        count=0
+    def getAverageOfExperiments(self, experiment_list, channel):
+        count = 0
         for i in experiment_list:
-            count+=1
-            if count==1:
-                data=self.values_only.loc[int(i)].loc[channel].copy()
+            count += 1
+            if count == 1:
+                data = self.values_only.loc[int(i)].loc[channel].copy()
             else:
-                data+=self.values_only.loc[int(i)].loc[channel]
+                data += self.values_only.loc[int(i)].loc[channel]
 
-        data=data/count
+        data = data / count
 
         return data
-
-
-
-
-
-
-
-
 
     def average_blank(self, blank_experiments):
         """
@@ -165,7 +156,6 @@ class EAGanalysis:
                 self.channel1/2_blank_avg  - pandas Series
                 """
 
-       
         self.channel1_blank_avg = self.values_only.loc[
             (blank_experiments, 1), slice(None)].mean()
         self.channel2_blank_avg = self.values_only.loc[
@@ -213,11 +203,11 @@ class EAGanalysis:
                   -------
                   self.offset_1/2  - 2 df of the data after offset, one for each channel
                   """
-        
+
         median_channel_1 = self.minus_blank_1.iloc[
-            :, :samples_to_offset].median(axis=1)
+                           :, :samples_to_offset].median(axis=1)
         median_channel_2 = self.minus_blank_2.iloc[
-            :, :samples_to_offset].median(axis=1)
+                           :, :samples_to_offset].median(axis=1)
 
         self.offset_1 = self.minus_blank_1.subtract(median_channel_1, axis=0)
         self.offset_2 = self.minus_blank_2.subtract(median_channel_2, axis=0)
@@ -229,13 +219,12 @@ class EAGanalysis:
         self.offset_1.index = self.offset_1.index + 1
         self.offset_2.index = self.offset_2.index + 1
         # strating the index from 1 instead of 0
-        
-    def calculate_stability(self):
+
+    def calculate_stability(self, first_experiments, second_experiments):
 
         """
                 This function creates an average of the first and last experiment's min points (with the same stimuli)
                 and give its ratio (1st/last)
-
                         Parameters
                         ----------
                         self.offset_1/2 - df
@@ -246,16 +235,21 @@ class EAGanalysis:
                         -------
                         response_stability - float for channel 1 and for channel 2
                         """
+        channel1_start_avg = self.offset_1.loc[
+            (first_experiments), slice(None)].min(axis=1).mean()
 
-        channel1_start_avg = self.offset_1.iloc[0:3].min(axis=1).mean()
-        channel2_start_avg = self.offset_2.iloc[0:3].min(axis=1).mean()
+        channel2_start_avg = self.offset_2.loc[
+            (first_experiments), slice(None)].min(axis=1).mean()
 
-        channel1_end_avg = self.offset_1.iloc[-4:-1].min(axis=1).mean()
-        channel2_end_avg = self.offset_2.iloc[-4:-1].min(axis=1).mean()
+        channel1_end_avg = self.offset_1.loc[
+            (second_experiments), slice(None)].min(axis=1).mean()
 
-        self.response_stability1= channel1_start_avg/channel1_end_avg
-        self.response_stability2= channel2_start_avg/channel2_end_avg
-        
+        channel2_end_avg = self.offset_2.loc[
+            (second_experiments), slice(None)].min(axis=1).mean()
+
+        self.response_stability1 = channel1_start_avg / channel1_end_avg
+        self.response_stability2 = channel2_start_avg / channel2_end_avg
+
     def compare_sides(self, channel_1):
 
         """ Compare the response of left and right antenna recorded in parallel according to
@@ -271,7 +265,6 @@ class EAGanalysis:
                   self.compare_sides_val - panda series of the ratios (the equation results)
                   """
 
-        #אם אפשר להגביל את האינפוט מהמשתמש פה שיכתוב רק L או R (ואולי רק באותיות גדולות, או לשנות את זה לאות גדולה)
         min_value_1 = self.offset_1.min(axis=1).abs()
         min_value_2 = self.offset_2.min(axis=1).abs()
         # get the min value, turn in to its absolute value
@@ -356,4 +349,4 @@ class EAGanalysis:
 # a.offset(100)
 # a.compare_sides()
 # a.export_to_excel()
-#a.calculate_stability([1,2,3],[46,47,48])
+# a.calculate_stability([1,2,3],[46,47,48])
