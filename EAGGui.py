@@ -233,7 +233,7 @@ def PlotWithLabels_func(SlicedData,SubstractBlankExperiments, num_of_labels):
     try:
         num_of_labels = int(num_of_labels)
     except:
-         mb.showerror("Error", "You didn't enter a number, so we choose 4")
+        mb.showerror("Error", "You didn't enter a number, so we choose 4")
         num_of_labels=4
 
     for i in range(num_of_labels):
