@@ -411,7 +411,7 @@ def main():
         text="Plot experiments with labels", command =
         lambda SlicedData = SlicedData, SubstractBlankExperiments=SubstractBlankExperiments:
         PlotWithLabels_func(SlicedData,SubstractBlankExperiments, num_of_labels_entry.get()))
-    PlotWithLabels.grid(row=11, column=2)
+    PlotWithLabels.grid(row=12, column=2)
 
 
     ExperimentsToRemove = Label(
