@@ -4,7 +4,7 @@ This project creates an easy-to-use dashboard that allow researchers to load, pr
 
 ## Installing and executing the program
 
-* Download the folder from the following link : https://www.dropbox.com/sh/fqueakv37j9f6u1/AAA8sDu4T7JmOr0SpZq1c0zHa?dl=0
+* Download all folders from the following link : https://www.dropbox.com/sh/fqueakv37j9f6u1/AAA8sDu4T7JmOr0SpZq1c0zHa?dl=0
 * Run the 'EAGGui' file in the 'dist' folder
 * The program can also be run using a Python IDE by running the EAGGui.py file.
 
