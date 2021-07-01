@@ -34,11 +34,27 @@ def plot_experiments_data(experiment_list, data, channel):
     plot1 = fig.add_subplot(111)
     if isinstance(experiment_list, int):
         experiment_list = str(experiment_list)
+    if len([experiment_list]) == 1:
+        experiment_list = [experiment_list]
     for i in experiment_list:
         plot1.plot(data.values_only.loc[int(i)].loc[channel])
         plot1.set_title('Experiments', loc='center')
         plot1.axes.get_xaxis().set_visible(False)
     plot1.legend(experiment_list)
+    return fig
+
+
+def plot_experiments_label_data(experiment_list, labels, data, channel):
+    fig = Figure(figsize=(5, 5))
+    plot1 = fig.add_subplot(111)
+    for i in range(len(experiment_list)):
+        if isinstance(experiment_list[i], int):
+            experiment_list[i] = str(experiment_list[i])
+    for experiment in experiment_list:
+        plot1.plot(data.getAverageOfExperiments(experiment,channel))
+        plot1.axes.get_xaxis().set_visible(False)
+    plot1.set_title('Labels plot channel' + str(channel), loc='center')
+    plot1.legend(labels)
     return fig
 
 
@@ -49,6 +65,8 @@ def plot_blank_experiments_data(experiment_list, data):
     plot2 = fig2.add_subplot(111)
     if isinstance(experiment_list, int):
         experiment_list = str(experiment_list)
+    if len([experiment_list]) == 1:
+        experiment_list = [experiment_list]
     for i in experiment_list:
         plot1.plot(data.values_only.loc[int(i)].loc[1])
         plot1.get_xaxis().set_visible(False)

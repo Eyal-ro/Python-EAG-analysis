@@ -3,10 +3,6 @@ from GUI_helper_functions import *
 from tkinter import messagebox
 import os
 
-
-TESTING = True
-
-
 def file_path():
     global filepath, loadedData
     filepath = StringVar()
@@ -25,8 +21,11 @@ def file_path():
 
 
 def slice_data(AnalysisTimeFrame, SlicedData, testing=None):
-    # if testing!=None:
-    #     loadedData=testing
+    # allows running tests in test_EAGGui.py file
+    global loadedData
+    if testing!=None:
+        loadedData=testing
+    
     # slices the data by "AnalysisTimeFrame" input
     time_frame = AnalysisTimeFrame.get()
     if not time_frame.isdecimal():
@@ -37,43 +36,6 @@ def slice_data(AnalysisTimeFrame, SlicedData, testing=None):
     loadedData.transpose()
     loadedData.multi_indexing()
     SlicedData["state"] = DISABLED
-
-
-def calculate_stability_1(SubstractBlankExperiments, FirstExperimentNumber1, SecondExperimentNumber1,entry_Stability):
-
-    if SubstractBlankExperiments["state"] == NORMAL:
-        mb.showerror("Error", "The data needs to be analyzed first. Please press the button 'Subtract blank and offset' ")
-    if SubstractBlankExperiments["state"] == DISABLED:
-        if not FirstExperimentNumber1.get().isdecimal(
-                ) or not SecondExperimentNumber1.get().isdecimal():
-            mb.showerror(
-                "Error", "The input must only contain numbers")
-        first_experiments = int(FirstExperimentNumber1.get())
-        second_experiments = int(SecondExperimentNumber1.get())
-
-        loadedData.calculate_stability(first_experiments, second_experiments)
-
-        response_stability = loadedData.response_stability1
-
-        entry_Stability.configure(text=str(response_stability))
-
-def calculate_stability_2(SubstractBlankExperiments, FirstExperimentNumber2, SecondExperimentNumber2,entry_Stability):
-
-    if SubstractBlankExperiments["state"] == NORMAL:
-        mb.showerror("Error", "The data needs to be analyzed first. Please press the button 'Subtract blank and offset' ")
-    if SubstractBlankExperiments["state"] == DISABLED:
-        if not FirstExperimentNumber2.get().isdecimal(
-                ) or not SecondExperimentNumber2.get().isdecimal():
-            mb.showerror(
-                "Error", "The input must only contain numbers")
-        first_experiments = int(FirstExperimentNumber2.get())
-        second_experiments = int(SecondExperimentNumber2.get())
-
-        loadedData.calculate_stability(first_experiments, second_experiments)
-
-        response_stability = loadedData.response_stability2
-
-        entry_Stability.configure(text=str(response_stability))
 
 def plot_blanks(SlicedData, BlankExperimentsEntry, EagGui):
     # gets the number of blank experiments and plots them
@@ -132,6 +94,25 @@ def subtract_blank(SlicedData, BlankExperimentsEntry, OffsetSampelsEntry,
     SubstractBlankExperiments["state"] = DISABLED
 
 
+def calculate_stability(SubstractBlankExperiments, FirstExperimentNumber1, SecondExperimentNumber1,entry_Stability,entry_Stability2):
+
+    if SubstractBlankExperiments["state"] == NORMAL:
+        mb.showerror("Error", "The data needs to be analyzed first. Please press the button 'Subtract blank and offset' ")
+
+    first_experiments = FirstExperimentNumber1.get()
+    second_experiments = SecondExperimentNumber1.get()
+
+    first_experiments = pharse_experiments_input(first_experiments)
+    second_experiments = pharse_experiments_input(second_experiments)
+
+    loadedData.calculate_stability(first_experiments, second_experiments)
+
+    response_stability = loadedData.response_stability1
+    response_stability_2 = loadedData.response_stability2
+
+    entry_Stability.configure(text=str(response_stability))
+    entry_Stability2.configure(text=str(response_stability_2))
+
 def export_data_to_excel(SlicedData, ExcelFileNameEntry, excel_button):
     global file_dir, temp_file_name
     if SlicedData["state"] == NORMAL:
@@ -162,6 +143,69 @@ def remove_experiments_from_data(SlicedData, ExperimentsToRemoveEntry,
         experiments_to_remove, axis=0)
     RemovesExperiments["state"] = DISABLED
 
+def PlotWithLabels_func(SlicedData,SubstractBlankExperiments, num_of_labels):
+    # create popup gui for specific labeling
+    EagLabels = Tk()
+    EagLabels.title("Plotting by labels")
+    all_label_rows = []
+    EagLabels.attributes('-topmost','true')
+    try:
+        num_of_labels = int(num_of_labels)
+    except:
+        num_of_labels=4
+
+    for i in range(num_of_labels):
+        row=[]
+        row.append(Label(EagLabels, text="Select experiments matching label "+str(i+1)+":", font=('Times 10')))
+        row[-1].grid(row=i,column=0)
+        row.append(Entry(EagLabels))
+        row[-1].grid(row=i,column=1)
+        row.append(Label(EagLabels, text="Select label "+str(i+1)+":", font=('Times 10')))
+        row[-1].grid(row=i,column=2)
+        row.append(Entry(EagLabels))
+        row[-1].grid(row=i,column=3)
+        all_label_rows.append(row)
+    # create button for making the plot
+
+    PlottingChannel_1_Button = Button(EagLabels, width=15, text="Create Plot channel 1", command =
+        lambda SlicedData=SlicedData,
+        all_label_rows=all_label_rows,
+        EagLabels=EagLabels, SubstractBlankExperiments=SubstractBlankExperiments,
+        channel=1:
+        plot_labels(SlicedData, all_label_rows, SubstractBlankExperiments, EagLabels, channel))
+    PlottingChannel_1_Button.grid(row=num_of_labels, column=0, columnspan=4)
+
+    PlottingChannel_2_Button = Button(EagLabels, width=15, text="Create Plot channel 2", command=
+    lambda SlicedData=SlicedData,
+           all_label_rows=all_label_rows,
+           EagLabels=EagLabels, SubstractBlankExperiments=SubstractBlankExperiments,
+           channel=2:
+    plot_labels(SlicedData, all_label_rows, SubstractBlankExperiments, EagLabels, channel))
+    PlottingChannel_2_Button.grid(row=num_of_labels, column=2, columnspan=4)
+
+
+    EagLabels.mainloop()
+
+
+def plot_labels(SlicedData, all_label_rows, SubstractBlankExperiments, EagLabels, channel):
+    # gets the number of experiments per label and plots them
+    if SlicedData["state"] == NORMAL or SubstractBlankExperiments["state"]==NORMAL:
+        mb.showerror("Error", "The data needs to be sliced and both offset and blank needs to be substracted  first!")
+        EagLabels.destroy()
+        return
+    experiments = []
+    labels=[]
+    for i in range(len(all_label_rows)):
+        current_experiment = all_label_rows[i][1].get()
+        if current_experiment == "":
+            continue
+        experiments.append(pharse_experiments_input(current_experiment))
+        labels.append(all_label_rows[i][3].get())
+    fig = plot_experiments_label_data(experiments, labels, loadedData, channel)
+    canvas = FigureCanvasTkAgg(fig, master=EagLabels)
+    canvas.draw()
+    canvas.get_tk_widget().grid(row=15, column=1)
+
 
 def main():
     EagGui = Tk()
@@ -186,42 +230,48 @@ def main():
     SlicedData.grid(row=4, column=2)
 
     FirstExperiment = Label(
-        EagGui, text="Select first experiment # - channel 1:", font=('Times 10'))
-    FirstExperiment.grid(row=5, column=0)
+        EagGui, text="Select first experiment # :", font=('Times 10'))
+    FirstExperiment.grid(row=8, column=0)
     FirstExperimentNumber1 = Entry(EagGui)
-    FirstExperimentNumber1.grid(row=5, column=1)
+    FirstExperimentNumber1.grid(row=8, column=1)
 
     SecondExperiment = Label(
-        EagGui, text="Select last experiment # - channel 1:", font=('Times 10'))
-    SecondExperiment.grid(row=6, column=0)
+        EagGui, text="Select last experiment # :", font=('Times 10'))
+    SecondExperiment.grid(row=9, column=0)
     SecondExperimentNumber1 = Entry(EagGui)
-    SecondExperimentNumber1.grid(row=6, column=1)
+    SecondExperimentNumber1.grid(row=9, column=1)
 
     entry_Stability = Label(EagGui, width=15, height=1, bg="light grey")
-    entry_Stability.grid(row=6, column=4)
+    entry_Stability.grid(row=8, column=4)
+
+    entry_Stability2 = Label(EagGui, width=15, height=1, bg="light grey")
+    entry_Stability2.grid(row=9, column=4)
 
     StabilityButton = Button(
         text="Compute", command=lambda
         SlicedData=SlicedData, FirstExperimentNumber1=FirstExperimentNumber1,
         SecondExperimentNumber1=SecondExperimentNumber1,
-        entry_Stability=entry_Stability:
-    calculate_stability_1(
+        entry_Stability=entry_Stability,entry_Stability2=entry_Stability2:
+    calculate_stability(
         SlicedData, FirstExperimentNumber1,
-        SecondExperimentNumber1, entry_Stability))
-    StabilityButton.grid(row=6, column=2)
+        SecondExperimentNumber1, entry_Stability,entry_Stability2))
+    StabilityButton.grid(row=8, column=2)
     # SlicedData = Button(text="Slice data")
     # SlicedData.configure(command=lambda AnalysisTimeFrame=AnalysisTimeFrame,
     #                                    SlicedData=SlicedData: slice_data(AnalysisTimeFrame, SlicedData))
     # SlicedData.grid(row=7, column=7)
 
-    label_StabilityButton = Label(EagGui, text="Response stability: ")
-    label_StabilityButton.grid(row=6, column=3)
+    label_StabilityButton = Label(EagGui, text="Response stability- channel 1: ")
+    label_StabilityButton.grid(row=8, column=3)
+
+    label_StabilityButton = Label(EagGui, text="Response stability- channel 2: ")
+    label_StabilityButton.grid(row=9, column=3)
 
     ExperimentsToAnalyze = Label(
         EagGui, text="Experiments to analyze:", font=('Times 10'))
-    ExperimentsToAnalyze.grid(row=7, column=0)
+    ExperimentsToAnalyze.grid(row=5, column=0)
     ExperimentsToAnalyzeEntry = Entry(EagGui)
-    ExperimentsToAnalyzeEntry.grid(row=7, column=1)
+    ExperimentsToAnalyzeEntry.grid(row=5, column=1)
 
     PlotExperimentsCh1 = Button(
         text="Plot experiments channel 1", command=
@@ -229,7 +279,7 @@ def main():
         ExperimentsToAnalyzeEntry=ExperimentsToAnalyzeEntry,
         EagGui=EagGui:
         plot_experiments_ch1(SlicedData, ExperimentsToAnalyzeEntry, EagGui))
-    PlotExperimentsCh1.grid(row=7, column=2)
+    PlotExperimentsCh1.grid(row=5, column=2)
 
     PlotExperimentsCh2 = Button(
         text="Plot experiments channel 2", command
@@ -237,19 +287,20 @@ def main():
         ExperimentsToAnalyzeEntry=ExperimentsToAnalyzeEntry,
         EagGui=EagGui:
         plot_experiments_ch2(SlicedData, ExperimentsToAnalyzeEntry, EagGui))
-    PlotExperimentsCh2.grid(row=7, column=3)
+    PlotExperimentsCh2.grid(row=5, column=3)
+
 
     BlankExperiments = Label(
         EagGui, text="Blank Experiments:", font=('Times 10'))
-    BlankExperiments.grid(row=8, column=0)
+    BlankExperiments.grid(row=6, column=0)
     BlankExperimentsEntry = Entry(EagGui)
-    BlankExperimentsEntry.grid(row=8, column=1)
+    BlankExperimentsEntry.grid(row=6, column=1)
 
     OffsetSampels = Label(
         EagGui, text="# of sampels for offset:", font=('Times 10'))
-    OffsetSampels.grid(row=9, column=0)
+    OffsetSampels.grid(row=7, column=0)
     OffsetSampelsEntry = Entry(EagGui)
-    OffsetSampelsEntry.grid(row=9, column=1)
+    OffsetSampelsEntry.grid(row=7, column=1)
 
     PlotBlankExperiments = Button(text="Plot blank",
                                   command=lambda SlicedData=SlicedData,
@@ -257,7 +308,7 @@ def main():
                                   EagGui=EagGui: plot_blanks(
                                       SlicedData,
                                       BlankExperimentsEntry, EagGui))
-    PlotBlankExperiments.grid(row=8, column=2)
+    PlotBlankExperiments.grid(row=6, column=2)
 
     SubstractBlankExperiments = Button(
         text="Subtract blank and offset")
@@ -272,7 +323,20 @@ def main():
                                                 BlankExperimentsEntry,
                                                 OffsetSampelsEntry,
                                                 SubstractBlankExperiments))
-    SubstractBlankExperiments.grid(row=9, column=2)
+    SubstractBlankExperiments.grid(row=7, column=2)
+
+    num_of_labels_label = Label(text="# of labels for plotting:", font=('Times 10'))
+    num_of_labels_label.grid(row=11, column=0)
+
+    num_of_labels_entry = Entry(EagGui)
+    num_of_labels_entry.grid(row=11, column=1)
+
+    PlotWithLabels = Button(
+        text="Plot experiments with labels", command =
+        lambda SlicedData = SlicedData, SubstractBlankExperiments=SubstractBlankExperiments:
+        PlotWithLabels_func(SlicedData,SubstractBlankExperiments, num_of_labels_entry.get()))
+    PlotWithLabels.grid(row=11, column=2)
+
 
     ExperimentsToRemove = Label(
         EagGui, text="Experiments to remove from data:", font=('Times 10'))
@@ -295,9 +359,9 @@ def main():
     ExcelFileName = Label(
         EagGui, text=
         "Type excel file name (without .xlsx):", font=('Times 10'))
-    ExcelFileName.grid(row=11, column=0)
+    ExcelFileName.grid(row=12, column=0)
     ExcelFileNameEntry = Entry(EagGui)
-    ExcelFileNameEntry.grid(row=11, column=1)
+    ExcelFileNameEntry.grid(row=12, column=1)
 
     excel_button = Button(
         EagGui, text="Export to excel", bg="green")
@@ -307,7 +371,7 @@ def main():
                                export_data_to_excel(
                                    SlicedData,
                                    ExcelFileNameEntry, excel_button))
-    excel_button.grid(row=11, column=2)
+    excel_button.grid(row=12, column=2)
 
     exit_button = Button(EagGui, text="Exit", bg="red", command=EagGui.destroy)
     exit_button.grid(row=20, column=1)
