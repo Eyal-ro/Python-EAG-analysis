@@ -13,6 +13,12 @@ Furthermore, working with large volume of data crushed the program on several oc
 This package can take data recorded from 2 channels in parallel and exported from AUTOSPIKE in ASCII format (.ASC), analyzed and plot it in several ways.
 An in-depth paragraph about your project and overview of use.
 
+### Special functions
+
+#### The Response Stability function
+
+Insect’s antenna signal tends to decay over time. Drop of the signal below a certain threshold must be considered while analyzing the results. This function will take the average of the minimum EAG values measured in the first experiment (for a given odorant) and compare it with the corresponding value of the last experiments with the same stimuli. The experimenter must design his experiment to have the same stimuli at the beginning and at the end.
+
 ## Getting Started
 
 ### Dependencies
@@ -30,7 +36,7 @@ An in-depth paragraph about your project and overview of use.
 * How to run the program
 * Step-by-step bullets
 
-Guideline for EAG analysis GUI:
+#### Guideline for EAG analysis GUI:
 
 1.	Click the 'Upload file' button to load select a data file (type ASC) to the dashboard.
 2.	Choose the analysis time frame in seconds by filling analysis time window and click the 'Slice data' button. 
