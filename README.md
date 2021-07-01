@@ -1,6 +1,6 @@
 # Python-EAG-analysis
 
-his project creates an easy-to-use dashboard that allow researchers to load, pre-process and plot initial EAG data from .ASC files.
+This project creates an easy-to-use dashboard that allow researchers to load, pre-process and plot initial EAG data from .ASC files.
 
 ## Description
 
