@@ -6,9 +6,10 @@ from matplotlib.figure import Figure
 import matplotlib
 from tkinter import messagebox as mb
 from tkinter import filedialog
+from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,
+                                               NavigationToolbar2Tk)
+
 matplotlib.use('TkAgg')
-from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, 
-NavigationToolbar2Tk)
 
 
 def pharse_experiments_input(experiments):
@@ -19,7 +20,7 @@ def pharse_experiments_input(experiments):
         if '-' in experiments[j]:
             new_experiments = new_experiments + list(
                 range(int(experiments[j].split('-')[0]),
-                      int(experiments[j].split('-')[1])+1))
+                      int(experiments[j].split('-')[1]) + 1))
             indeces_to_remove.append(j)
     for ele in sorted(indeces_to_remove, reverse=True):
         del experiments[ele]
@@ -51,7 +52,7 @@ def plot_experiments_label_data(experiment_list, labels, data, channel):
         if isinstance(experiment_list[i], int):
             experiment_list[i] = str(experiment_list[i])
     for experiment in experiment_list:
-        plot1.plot(data.getAverageOfExperiments(experiment,channel))
+        plot1.plot(data.getAverageOfExperiments(experiment, channel))
         plot1.axes.get_xaxis().set_visible(False)
     plot1.set_title('Labels plot channel' + str(channel), loc='center')
     plot1.legend(labels)
@@ -78,4 +79,3 @@ def plot_blank_experiments_data(experiment_list, data):
     fig1.legend(experiment_list)
     fig2.legend(experiment_list)
     return fig1, fig2
-
