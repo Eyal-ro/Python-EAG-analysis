@@ -1,9 +1,8 @@
 from EAG_analysis_class import *
-import pathlib
 from os import path
 
 
-def compare_data_to_csv(csv,data):
+def compare_data_to_csv(csv, data):
     """compare pre-made real data file and test panda data frame,
         while ignoring NaN values, and estimating them as equals if the
         difference between them is smaller than python rounding resolution
@@ -66,7 +65,7 @@ def test_transpose(slice=6):
     temp = EAGanalysis('Raw data - mix and segments, 12.5.21.ASC')
     temp.arrange_data(slice)
     temp.transpose()
-    if compare_data_to_csv("transpose_test.csv",temp.values_only):
+    if compare_data_to_csv("transpose_test.csv", temp.values_only):
         return "success test_transpose"
     else:
         return "error test_transpose"
@@ -77,7 +76,7 @@ def test_multi_indexing(slice=6):
     temp.arrange_data(slice)
     temp.transpose()
     temp.multi_indexing()
-    if compare_data_to_csv("multi_indexing_test.csv",temp.values_only):
+    if compare_data_to_csv("multi_indexing_test.csv", temp.values_only):
         return "success test_multi_indexing"
     else:
         return "error test_multi_indexing"
@@ -88,7 +87,7 @@ def test_multi_indexing(slice=6):
     temp.arrange_data(slice)
     temp.transpose()
     temp.multi_indexing()
-    if compare_data_to_csv("multi_indexing_test.csv",temp.values_only):
+    if compare_data_to_csv("multi_indexing_test.csv", temp.values_only):
         return "success test_multi_indexing"
     else:
         return "error test_multi_indexing"
@@ -100,7 +99,7 @@ def test_average_blank_channel1(slice=6, blank_experiments=1):
     temp.transpose()
     temp.multi_indexing()
     temp.average_blank(blank_experiments)
-    if -524.2147651006711==temp.channel1_blank_avg:
+    if -524.2147651006711 == temp.channel1_blank_avg:
         return "success test_average_blank_channel1"
     else:
         return "error test_average_blank_channel1"
@@ -112,7 +111,7 @@ def test_average_blank_channel2(slice=6, blank_experiments=1):
     temp.transpose()
     temp.multi_indexing()
     temp.average_blank(blank_experiments)
-    if -215.55872483221478==temp.channel2_blank_avg:
+    if -215.55872483221478 == temp.channel2_blank_avg:
         return "success test_average_blank_channel2"
     else:
         return "error test_average_blank_channel2"
@@ -131,7 +130,7 @@ def test_minus_blank_channel1(slice=6,blank_experiments=1):
         return "error test_minus_blank_channel1"
 
 
-def test_minus_blank_channel2(slice=6,blank_experiments=1):
+def test_minus_blank_channel2(slice=6, blank_experiments=1):
     temp = EAGanalysis('Raw data - mix and segments, 12.5.21.ASC')
     temp.arrange_data(slice)
     temp.transpose()
@@ -144,7 +143,7 @@ def test_minus_blank_channel2(slice=6,blank_experiments=1):
         return "error test_minus_blank_channel2"
 
     
-def test_offset_channel1(slice=6,blank_experiments=1, sampels_to_offset=100):
+def test_offset_channel1(slice=6, blank_experiments=1, sampels_to_offset=100):
     temp = EAGanalysis('Raw data - mix and segments, 12.5.21.ASC')
     temp.arrange_data(slice)
     temp.transpose()
@@ -158,7 +157,7 @@ def test_offset_channel1(slice=6,blank_experiments=1, sampels_to_offset=100):
         return "error test_offset_channel1"
 
     
-def test_offset_channel2(slice=6,blank_experiments=1, sampels_to_offset=100):
+def test_offset_channel2(slice=6, blank_experiments=1, sampels_to_offset=100):
     temp = EAGanalysis('Raw data - mix and segments, 12.5.21.ASC')
     temp.arrange_data(slice)
     temp.transpose()
@@ -187,7 +186,7 @@ def test_compare_sides(slice=6,blank_experiments=1, sampels_to_offset=100):
         return "error test_compare_sides"
 
 
-def test_compare_sides(slice=6,blank_experiments=1, sampels_to_offset=100, channel_1="R"):
+def test_compare_sides(slice=6, blank_experiments=1, sampels_to_offset=100, channel_1="R"):
     temp = EAGanalysis('Raw data - mix and segments, 12.5.21.ASC')
     temp.arrange_data(slice)
     temp.transpose()
@@ -195,7 +194,7 @@ def test_compare_sides(slice=6,blank_experiments=1, sampels_to_offset=100, chann
     temp.average_blank(blank_experiments)
     temp.minus_blank()
     temp.offset(sampels_to_offset)
-    temp.compare_sides("R")
+    temp.compare_sides(channel_1)
     if compare_data_to_csv("compare_sides_test.csv", temp.compare_sides_val):
         return "success test_compare_sides"
     else:

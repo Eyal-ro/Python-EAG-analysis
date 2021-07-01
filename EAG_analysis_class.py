@@ -28,7 +28,7 @@ class EAGanalysis:
         if data_fname.is_file():
             self.data_fname = data_fname
         else:
-            raise ValueError()
+            return "File is invalid"
 
         self.data = pd.read_csv(
             self.data_fname, sep="\t", names=['Time', 'Value'])

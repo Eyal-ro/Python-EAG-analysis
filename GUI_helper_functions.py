@@ -13,7 +13,7 @@ matplotlib.use('TkAgg')
 
 def pharse_experiments_input(experiments):
     """
-    Pharse experiments number input to valid list.
+    Phrase experiments number input to valid list.
 
     ----------
     experiments : use input
@@ -69,6 +69,20 @@ def plot_experiments_data(experiment_list, data, channel):
 
 
 def plot_experiments_label_data(experiment_list, labels, data, channel):
+    """
+    Plot experiment list by labels.
+
+    ----------
+    experiment_list : specified by user input
+    labels : specified by user input
+    data : dataset
+    channel : which channel to plot
+
+    Returns
+    -------
+    fig : a figure
+
+    """
     fig = Figure(figsize=(5, 5))
     plot1 = fig.add_subplot(111)
     for i in range(len(experiment_list)):
@@ -95,9 +109,9 @@ def plot_blank_experiments_data(experiment_list, data):
     fig : a figure
 
     """
-    fig1 = Figure(figsize=(5, 5))
+    fig1 = Figure(figsize=(3, 3))
     plot1 = fig1.add_subplot(111)
-    fig2 = Figure(figsize=(5, 5))
+    fig2 = Figure(figsize=(3, 3))
     plot2 = fig2.add_subplot(111)
     if isinstance(experiment_list, int):
         experiment_list = str(experiment_list)
