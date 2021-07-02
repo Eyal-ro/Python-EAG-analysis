@@ -125,14 +125,18 @@ class EAGanalysis:
         count = 0
         for i in experiment_list:
             count += 1
-            if count == 1:
-                data = self.values_only.loc[int(i)].loc[channel].copy()
-            else:
-                data += self.values_only.loc[int(i)].loc[channel]
+            if channel == 1:
+                if count == 1:
+                    data = self.offset_1.loc[int(i)].copy()
+                else:
+                    data += self.offset_1.loc[int(i)]
+            elif channel == 2:
+                if count == 1:
+                    data = self.offset_2.loc[int(i)].copy()
+                else:
+                    data += self.offset_2.loc[int(i)]
 
         data = data / count
-
-        return data
 
     def average_blank(self, blank_experiments):
         """
