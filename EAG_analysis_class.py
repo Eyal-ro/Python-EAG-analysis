@@ -240,8 +240,9 @@ class EAGanalysis:
         channel2_end_avg = self.offset_2.loc[
             (second_experiments), slice(None)].min(axis=1).mean()
 
-        self.response_stability1 = channel1_start_avg / channel1_end_avg
-        self.response_stability2 = channel2_start_avg / channel2_end_avg
+        self.response_stability1 = channel1_end_avg / channel1_start_avg
+        self.response_stability2 = channel2_end_avg / channel2_start_avg
+
 
     def compare_sides(self, channel_1):
 
